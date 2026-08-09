@@ -747,8 +747,8 @@
                 <section id="discord-section" style="text-align:center;">
                     <h3 class="section-title" style="justify-content:center;">💬 Join Our Discord</h3>
                     <p style="font-size:0.9rem; opacity:0.8; margin-top:0;">Chat with other players, share your streaks, and get updates.</p>
-                    <a >
-                        <button style="width:100%; background:#353750; color:#fff;">⚠️ Currently Unavailable</button>
+                    <a href="https://discord.gg/YOUR-INVITE-CODE-HERE" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+                        <button style="width:100%; background:#5865F2; color:#fff;">💬 Join the Discord</button>
                     </a>
                 </section>
 
@@ -1966,6 +1966,7 @@
             populateFriendDropdown();
             checkChallengeUnlock();
             listenForIncomingChallenges();
+            listenForOutgoingChallengeAccepted();
 
             renderShop();
             await loadLists();
@@ -2735,6 +2736,29 @@ function onTouchEnd() {
                 }
                 renderIncomingChallenges(incoming);
                 updateChallengeNotificationBadges(incoming.length);
+            });
+        }
+
+        // Fix: previously only the person who clicked "Accept" ever entered the
+        // live game room - the sender who initiated the challenge had nothing
+        // watching for acceptance, so they stayed stuck on the compose screen
+        // forever while their opponent was already playing. This listener
+        // closes that gap by watching the sender's own outgoing challenges for
+        // the moment they're accepted, and pulls them into the same game.
+        function listenForOutgoingChallengeAccepted() {
+            const challengesRef = collection(db, "challenges");
+            const q = query(challengesRef, where("from", "==", currentUser.id), where("status", "==", "accepted"));
+            onSnapshot(q, async (snap) => {
+                for (const docSnap of snap.docs) {
+                    const data = docSnap.data();
+                    if (!data.gameId) continue;
+                    if (challengeGameState.gameId === data.gameId) continue; // already in this game
+                    const hideText = document.getElementById('challenge-hide-text')?.checked || false;
+                    startChallengeGame(data.gameId, data.to, data.timeLimit || 0, hideText);
+                    showToast(`${data.to} accepted your challenge! Game starting...`, "success");
+                    // Mark consumed so this listener stops matching it (avoids re-triggering on reconnect)
+                    try { await updateDoc(docSnap.ref, { status: 'started' }); } catch (e) { console.error("Failed to mark challenge started:", e); }
+                }
             });
         }
 
