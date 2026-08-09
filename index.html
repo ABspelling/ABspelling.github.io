@@ -454,6 +454,18 @@
                     <button id="recalc-networth-btn" style="background:var(--info); margin-top:10px;">🔄 Recalculate Net Worth (All Users)</button>
                     <button id="reset-themes-btn" style="background:var(--danger); margin-top:10px;">🎨 Reset Theme Shop &amp; Collector Badge (All Users)</button>
 
+                    <!-- Shared App Settings -->
+                    <div class="list-management">
+                        <h4>⚙️ App Settings</h4>
+                        <p style="font-size:0.85rem; opacity:0.75; margin-top:0;">Ranked mode always uses this list for everyone - players can't change it.</p>
+                        <select id="admin-ranked-list-select"><option value="all">All Lists</option></select>
+                        <button id="save-ranked-list-btn" style="background:var(--secondary);">Save</button>
+                        <p style="font-size:0.85rem; opacity:0.75; margin-top:12px;">Force a specific event on for everyone (overrides the automatic date-based one). Choose "Automatic" to go back to normal.</p>
+                        <select id="admin-event-select"><option value="">Automatic (by date)</option></select>
+                        <button id="save-event-btn" style="background:var(--secondary);">Save</button>
+                        <p id="admin-settings-msg" class="msg"></p>
+                    </div>
+
                     <!-- Family Summary (parent/guardian view) -->
                     <div class="list-management">
                         <h4>👪 Family Summary</h4>
@@ -483,6 +495,11 @@
                             <option value="UK">🇬🇧 UK English</option>
                             <option value="AU">🇦🇺 Australian English</option>
                         </select>
+                        <div style="display:flex; align-items:center; gap:10px; margin-top:8px;">
+                            <label for="voice-volume-slider" style="font-size:0.9rem; white-space:nowrap;">🔊 Volume</label>
+                            <input type="range" id="voice-volume-slider" min="0" max="100" value="100" class="diagonal-slider" style="flex:1;">
+                            <span id="voice-volume-display" style="min-width:38px; text-align:right; font-size:0.9rem;">100%</span>
+                        </div>
                     </div>
 
                     <!-- List selector (global) -->
@@ -550,6 +567,7 @@
                             <span>Rank Points: <strong id="rank-points">0</strong></span>
                             <span>Multiplier: <span id="difficulty-mult">1.0x</span></span>
                         </div>
+                        <p id="ranked-locked-note" style="font-size:0.85rem; opacity:0.75; margin-top:-6px;">🔒 Ranked always uses: All Lists</p>
                         <button id="play-ranked-btn" class="big-btn">🔊 Hear Word (Ranked)</button>
                         <div class="action-row">
                             <input type="text" id="ranked-spell" placeholder="Spell..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
@@ -656,6 +674,11 @@
                             </div>
                             <p id="sim-msg" class="msg"></p>
                         </div>
+                        <div style="margin-top:20px; padding-top:15px; border-top:1px solid rgba(246,235,214,0.1);">
+                            <h4 style="margin-bottom:8px;">🏆 All-Time Record Holders</h4>
+                            <p style="font-size:0.85rem; opacity:0.7; margin-top:0;">The highest round anyone has ever reached.</p>
+                            <div id="sim-leaderboard-list"><p style="opacity:0.6;">Loading...</p></div>
+                        </div>
                     </div>
                 </section>
 
@@ -719,6 +742,16 @@
             </div> <!-- end main-col -->
 
             <div class="side-col">
+                <!-- Discord Community -->
+                <!-- ⚠️ PLACEHOLDER: replace href below with your real Discord invite link (e.g. https://discord.gg/yourcode) -->
+                <section id="discord-section" style="text-align:center;">
+                    <h3 class="section-title" style="justify-content:center;">💬 Join Our Discord</h3>
+                    <p style="font-size:0.9rem; opacity:0.8; margin-top:0;">Chat with other players, share your streaks, and get updates.</p>
+                    <a >
+                        <button style="width:100%; background:#353750; color:#fff;">⚠️ Currently Unavailable</button>
+                    </a>
+                </section>
+
                 <!-- Daily Quests with Reroll Button -->
                 <section id="quests-section">
                     <h3 class="section-title">📋 Daily Quests <button id="reroll-quests-btn" class="badge" style="background:var(--info); font-size:0.8rem;">🔄 Reroll (5 🍯)</button></h3>
@@ -1022,9 +1055,12 @@
         let isAdmin = false;
         let masterAdmin = false;
         let selectedVoiceURI = null;
+        let voiceVolume = 1.0; // 0.0 - 1.0, controls how loud speakWord() plays
         let voices = [];
         let listsData = [];
         let currentListId = "all";
+        let preRankedListId = "all"; // remembers the player's normal list choice while they're in ranked mode
+        let appConfig = { rankedListId: "all", activeEventId: null };
         let congratsEnabled = true;
         let soundEnabled = true;
         let autoTheme = false;
@@ -1108,10 +1144,14 @@
 
         const questPool = [
             { id: 'spell10', name: 'Spell 10 words', target: 10, reward: { points: 50, honey: 5 }, type: 'spell' },
+            { id: 'spell25', name: 'Spell 25 words', target: 25, reward: { points: 110, honey: 10 }, type: 'spell' },
             { id: 'win2ranked', name: 'Win 2 ranked matches', target: 2, reward: { points: 100, honey: 10 }, type: 'rankedWin' },
             { id: 'use5powerups', name: 'Use 5 power-ups', target: 5, reward: { points: 75, honey: 8 }, type: 'powerup' },
             { id: 'challenge3', name: 'Complete 3 challenges', target: 3, reward: { points: 120, honey: 12 }, type: 'challenge' },
-            { id: 'streak3', name: 'Maintain a 3-day streak', target: 3, reward: { points: 150, honey: 15 }, type: 'streak' },
+            { id: 'streak3', name: 'Reach a 3-day streak', target: 3, reward: { points: 150, honey: 15 }, type: 'streak' },
+            { id: 'review5', name: 'Practice 5 words in Word Review', target: 5, reward: { points: 60, honey: 6 }, type: 'review' },
+            { id: 'perfect5', name: 'Get 5 words right in a row', target: 5, reward: { points: 80, honey: 8 }, type: 'perfectStreak' },
+            { id: 'friendChallenge1', name: 'Send 1 friend challenge', target: 1, reward: { points: 40, honey: 4 }, type: 'sendChallenge' },
         ];
 
         // Enhanced difficulty analyzer
@@ -1177,14 +1217,14 @@
         async function rerollQuests() {
             const cost = 5;
             if (honeycombs < cost) {
-                alert(`Not enough honey! Need ${cost} 🍯 to reroll quests.`);
+                showToast(`Not enough honey! Need ${cost} 🍯 to reroll quests.`, "error");
                 return;
             }
             if (!await spendHoney(cost)) return;
 
             const available = getAvailableQuests();
             if (available.length < 3) {
-                alert("Not enough different quest types available right now.");
+                showToast("Not enough different quest types available right now.", "error");
                 return;
             }
             const shuffled = [...available].sort(() => 0.5 - Math.random());
@@ -1194,7 +1234,9 @@
                 completed: false
             }));
             currentUser.dailyQuests = dailyQuests;
-            await updateDoc(doc(db, "users", currentUser.id), { dailyQuests });
+            const todayKey = new Date().toISOString().slice(0, 10);
+            currentUser.dailyQuestsDate = todayKey;
+            await updateDoc(doc(db, "users", currentUser.id), { dailyQuests, dailyQuestsDate: todayKey });
             renderQuests();
             alert("Quests rerolled! New quests assigned.");
         }
@@ -1205,6 +1247,35 @@
         let wordOfDayPoints = 15;
         let wordOfDayHoney = 5;
         let currentEvent = null;
+
+        // ---------- Seasonal Events ----------
+        // Unlike the old version, these actually do something: a real
+        // points/XP bonus while active, not just a banner. Admins can force
+        // one on for everyone from the App Settings panel, or leave it on
+        // "Automatic" to run by date.
+        const SEASONAL_EVENTS = [
+            { id: 'newyear',    name: '🎉 New Year Kickoff',      months: [0],     emoji: '🎉', bonusPercent: 25 },
+            { id: 'valentines', name: '💌 Valentine\'s Word Bash', months: [1],     emoji: '💌', bonusPercent: 25 },
+            { id: 'spring',     name: '🌸 Spring Bloom',          months: [2,3],   emoji: '🌸', bonusPercent: 20 },
+            { id: 'summer',     name: '☀️ Summer Spelling Camp',  months: [5,6,7], emoji: '☀️', bonusPercent: 20 },
+            { id: 'backtoschool', name: '🎒 Back to School Boost', months: [8],    emoji: '🎒', bonusPercent: 30 },
+            { id: 'halloween',  name: '🎃 Halloween Spooktacular', months: [9],    emoji: '🎃', bonusPercent: 50 },
+            { id: 'thanksgiving', name: '🦃 Thanksgiving Feast',  months: [10],    emoji: '🦃', bonusPercent: 25 },
+            { id: 'winter',     name: '🎄 Winter Wonderland',     months: [11],    emoji: '🎄', bonusPercent: 50 },
+        ];
+
+        function getActiveEvent() {
+            if (appConfig.activeEventId) {
+                return SEASONAL_EVENTS.find(e => e.id === appConfig.activeEventId) || null;
+            }
+            const month = new Date().getMonth();
+            return SEASONAL_EVENTS.find(e => e.months.includes(month)) || null;
+        }
+
+        function getEventBonusMultiplier() {
+            const event = getActiveEvent();
+            return event ? 1 + (event.bonusPercent / 100) : 1;
+        }
         const customWordsRef = collection(db, "customWords");
         let publicWordDeck = [];
         let currentPublicWord = "";
@@ -1266,6 +1337,52 @@
         async function updateNetWorth() { if (!currentUser) return; const netWorth = calculateNetWorth(currentUser); if (netWorth === lastNetWorth) return; lastNetWorth = netWorth; await updateDoc(doc(db, "users", currentUser.id), { netWorth }); currentUser.netWorth = netWorth; }
         async function recalcAllNetWorths() { if (!masterAdmin) return; const usersSnap = await getDocs(collection(db, "users")); for (const userDoc of usersSnap.docs) { const userData = userDoc.data(); const netWorth = calculateNetWorth(userData); await updateDoc(doc(db, "users", userDoc.id), { netWorth }); } alert("All net worths recalculated!"); }
 
+        function populateAdminSettingsControls() {
+            const rankedSelect = document.getElementById('admin-ranked-list-select');
+            const eventSelect = document.getElementById('admin-event-select');
+            if (rankedSelect) {
+                rankedSelect.innerHTML = '<option value="all">All Lists</option>' +
+                    listsData.map(l => `<option value="${l.id}">${escapeHTML(l.name)}</option>`).join('');
+                rankedSelect.value = appConfig.rankedListId || 'all';
+            }
+            if (eventSelect) {
+                eventSelect.innerHTML = '<option value="">Automatic (by date)</option>' +
+                    SEASONAL_EVENTS.map(e => `<option value="${e.id}">${escapeHTML(e.name)}</option>`).join('');
+                eventSelect.value = appConfig.activeEventId || '';
+            }
+        }
+
+        document.getElementById('save-ranked-list-btn')?.addEventListener('click', async () => {
+            if (!masterAdmin && !isAdmin) return;
+            const value = document.getElementById('admin-ranked-list-select').value;
+            const msg = document.getElementById('admin-settings-msg');
+            try {
+                appConfig.rankedListId = value;
+                await setDoc(doc(db, "config", "appSettings"), appConfig, { merge: true });
+                msg.innerText = "✅ Ranked list updated for everyone.";
+                msg.style.color = "var(--success)";
+            } catch (e) {
+                console.error("Failed to save ranked list setting:", e);
+                msg.innerText = "Failed to save - check your connection and try again.";
+            }
+        });
+
+        document.getElementById('save-event-btn')?.addEventListener('click', async () => {
+            if (!masterAdmin && !isAdmin) return;
+            const value = document.getElementById('admin-event-select').value;
+            const msg = document.getElementById('admin-settings-msg');
+            try {
+                appConfig.activeEventId = value || null;
+                await setDoc(doc(db, "config", "appSettings"), appConfig, { merge: true });
+                checkSeasonalEvent();
+                msg.innerText = "✅ Event updated for everyone.";
+                msg.style.color = "var(--success)";
+            } catch (e) {
+                console.error("Failed to save event setting:", e);
+                msg.innerText = "Failed to save - check your connection and try again.";
+            }
+        });
+
         async function loadFamilySummary() {
             if (!masterAdmin && !isAdmin) return;
             const container = document.getElementById('family-summary-table');
@@ -1318,7 +1435,7 @@
             alert("Done. Everyone's themes and Collector badge have been reset. Secret/streak themes will re-grant automatically the next time each person qualifies for them, same as before.");
         }
 
-        async function addPoints(amount) { if (doublePointsActive) amount *= 2; currentUser.points = (Number(currentUser.points) || 0) + amount; await updateDoc(doc(db, "users", currentUser.id), { points: currentUser.points }); updateStats(); await updateNetWorth(); }
+        async function addPoints(amount) { if (doublePointsActive) amount *= 2; amount = Math.round(amount * getEventBonusMultiplier()); currentUser.points = (Number(currentUser.points) || 0) + amount; await updateDoc(doc(db, "users", currentUser.id), { points: currentUser.points }); updateStats(); await updateNetWorth(); }
         async function spendPoints(amount) { if ((Number(currentUser.points) || 0) < amount) return false; currentUser.points = (Number(currentUser.points) || 0) - amount; currentUser.pointsSpent = (Number(currentUser.pointsSpent) || 0) + amount; await updateDoc(doc(db, "users", currentUser.id), { points: currentUser.points, pointsSpent: currentUser.pointsSpent }); updateStats(); await updateNetWorth(); return true; }
         function pointsForLevel(level) { return 5 * (level + 1); }
 
@@ -1461,6 +1578,25 @@
         });
         document.getElementById('accent-select').addEventListener('change', populateVoices);
 
+        let volumeSaveTimeout;
+        document.getElementById('voice-volume-slider').addEventListener('input', (e) => {
+            const pct = Number(e.target.value);
+            voiceVolume = pct / 100;
+            document.getElementById('voice-volume-display').innerText = pct + '%';
+            clearTimeout(volumeSaveTimeout);
+            volumeSaveTimeout = setTimeout(async () => {
+                if (currentUser) {
+                    currentUser.voiceVolume = voiceVolume;
+                    try {
+                        await updateDoc(doc(db, "users", currentUser.id), { voiceVolume });
+                    } catch (e) { console.error("Failed to save voice volume:", e); }
+                }
+            }, 500);
+        });
+        document.getElementById('voice-volume-slider').addEventListener('change', () => {
+            speakWord('test'); // quick audible preview when the user releases the slider
+        });
+
         function speakWord(word) {
             if (!word) return;
             if (!window.speechSynthesis) {
@@ -1469,6 +1605,7 @@
             }
             const utter = new SpeechSynthesisUtterance(word);
             utter.rate = 0.8;
+            utter.volume = voiceVolume;
             if (selectedVoiceURI) {
                 const voice = voices.find(v => v.voiceURI === selectedVoiceURI);
                 if (voice) utter.voice = voice;
@@ -1785,6 +1922,7 @@
             document.getElementById('app-screen').classList.remove('hidden');
             document.getElementById('welcome-text').innerText = "Hello, " + currentUser.id.charAt(0).toUpperCase() + currentUser.id.slice(1);
             document.getElementById('profile-username').innerText = currentUser.id;
+            await loadAppConfig();
             updateProfilePreview();
             updateStats();
             await checkStreakOnLogin();
@@ -1831,6 +1969,7 @@
 
             renderShop();
             await loadLists();
+            if (masterAdmin || isAdmin) populateAdminSettingsControls();
             setupLeaderboards();
             setupTabs();
             setupUnseenMode();
@@ -2028,6 +2167,12 @@
                 if (currentUser.preferredVoice) {
                     selectedVoiceURI = currentUser.preferredVoice;
                     document.getElementById('voice-select').value = selectedVoiceURI;
+                }
+                if (typeof currentUser.voiceVolume === 'number') {
+                    voiceVolume = currentUser.voiceVolume;
+                    const pct = Math.round(voiceVolume * 100);
+                    document.getElementById('voice-volume-slider').value = pct;
+                    document.getElementById('voice-volume-display').innerText = pct + '%';
                 }
                 if (!currentUser.pointsSpent) {
                     let estimatedSpent = 0;
@@ -2507,6 +2652,7 @@ function onTouchEnd() {
             });
         }
 
+        const QUEST_ICONS = { spell: '📝', rankedWin: '🏆', powerup: '⚡', challenge: '🤝', streak: '🔥', review: '📖', perfectStreak: '✨', sendChallenge: '📨' };
         function renderQuests() {
             const container = document.getElementById('quests-list');
             if (!container) return;
@@ -2518,12 +2664,13 @@ function onTouchEnd() {
             dailyQuests.forEach(q => {
                 const div = document.createElement('div');
                 div.className = 'quest-item';
+                const icon = QUEST_ICONS[q.type] || '🎯';
                 div.innerHTML = `
                     <div style="display:flex; justify-content:space-between;">
-                        <span>${q.name}</span>
-                        <span>${q.progress}/${q.target}</span>
+                        <span>${icon} ${escapeHTML(q.name)}</span>
+                        <span>${Math.min(q.progress, q.target)}/${q.target}</span>
                     </div>
-                    <div class="quest-progress"><div class="quest-progress-fill" style="width:${(q.progress/q.target)*100}%"></div></div>
+                    <div class="quest-progress"><div class="quest-progress-fill" style="width:${Math.min(100, (q.progress/q.target)*100)}%"></div></div>
                     <small>Reward: ${q.reward.points} pts, ${q.reward.honey} 🍯</small>
                     ${q.completed ? '<span style="color:var(--success);">✅ Completed</span>' : ''}
                 `;
@@ -2535,19 +2682,25 @@ function onTouchEnd() {
             await updateDoc(doc(db, "users", currentUser.id), { dailyQuests });
         }
         function updateQuestProgress(type, amount = 1) {
+            let anyCompleted = [];
             dailyQuests.forEach(q => {
-                if (!q.completed && q.type === type) {
+                if (q.completed || q.type !== type) return;
+                if (type === 'streak') {
+                    // Streak quests reflect the current streak directly, not an incrementing counter
+                    q.progress = Math.max(q.progress, amount);
+                } else {
                     q.progress += amount;
-                    if (q.progress >= q.target) {
-                        q.completed = true;
-                        addPoints(q.reward.points);
-                        addHoney(q.reward.honey);
-                        alert(`Quest completed: ${q.name}!`);
-                    }
+                }
+                if (q.progress >= q.target) {
+                    q.completed = true;
+                    addPoints(q.reward.points);
+                    addHoney(q.reward.honey);
+                    anyCompleted.push(q.name);
                 }
             });
             updateUserQuests();
             renderQuests();
+            anyCompleted.forEach(name => showToast(`Quest completed: ${name}! 🎉`, "success"));
         }
 
         function checkChallengeUnlock() {
@@ -3358,6 +3511,7 @@ function onTouchEnd() {
 
         async function addXP(amount) {
             if (doubleXpActive) amount *= 2;
+            amount = Math.round(amount * getEventBonusMultiplier());
             currentUser.xp += amount;
             let leveled = false;
             while (currentUser.xp >= xpForLevel(currentUser.level)) {
@@ -3580,6 +3734,7 @@ function onTouchEnd() {
                     tabs.forEach(t => t.classList.remove('active'));
                     tab.classList.add('active');
                     const mode = tab.dataset.mode;
+                    const wasRanked = document.getElementById('ranked-mode').classList.contains('hidden') === false;
                     document.getElementById('classic-mode').classList.add('hidden');
                     document.getElementById('challenge-mode').classList.add('hidden');
                     document.getElementById('ranked-mode').classList.add('hidden');
@@ -3589,9 +3744,26 @@ function onTouchEnd() {
                     document.getElementById('tournament-mode').classList.add('hidden');
                     document.getElementById('local-mode').classList.add('hidden');
                     document.getElementById('simulator-mode').classList.add('hidden');
+
+                    // Leaving ranked mode - restore the player's normal list choice
+                    if (wasRanked && mode !== 'ranked') {
+                        currentListId = preRankedListId;
+                        const listSelect = document.getElementById('list-select');
+                        if (listSelect) { listSelect.disabled = false; listSelect.value = currentListId; }
+                    }
+
                     if (mode === 'classic') document.getElementById('classic-mode').classList.remove('hidden');
                     else if (mode === 'challenge') document.getElementById('challenge-mode').classList.remove('hidden');
-                    else if (mode === 'ranked') document.getElementById('ranked-mode').classList.remove('hidden');
+                    else if (mode === 'ranked') {
+                        document.getElementById('ranked-mode').classList.remove('hidden');
+                        // Ranked always uses the admin-configured list (default: All Lists) - not player-changeable
+                        preRankedListId = currentListId;
+                        currentListId = appConfig.rankedListId || 'all';
+                        const listSelect = document.getElementById('list-select');
+                        if (listSelect) { listSelect.value = currentListId; listSelect.disabled = true; }
+                        const lockedListName = currentListId === 'all' ? 'All Lists' : (listsData.find(l => l.id === currentListId)?.name || currentListId);
+                        document.getElementById('ranked-locked-note').innerText = `🔒 Ranked always uses: ${lockedListName}`;
+                    }
                     else if (mode === 'live') document.getElementById('live-mode').classList.remove('hidden');
                     else if (mode === 'unseen') document.getElementById('unseen-mode').classList.remove('hidden');
                     else if (mode === 'public') {
@@ -3603,7 +3775,10 @@ function onTouchEnd() {
                     }
                     else if (mode === 'tournament') document.getElementById('tournament-mode').classList.remove('hidden');
                     else if (mode === 'local') document.getElementById('local-mode').classList.remove('hidden');
-                    else if (mode === 'simulator') document.getElementById('simulator-mode').classList.remove('hidden');
+                    else if (mode === 'simulator') {
+                        document.getElementById('simulator-mode').classList.remove('hidden');
+                        loadSimulatorLeaderboard();
+                    }
                 });
             });
         }
@@ -3667,13 +3842,14 @@ function onTouchEnd() {
         }
 
         function checkSeasonalEvent() {
-            const month = new Date().getMonth();
-            let eventName = '';
-            if (month === 9) eventName = '🎃 Halloween Spooktacular! Special words this week!';
-            else if (month === 11) eventName = '🎄 Christmas Wonderland! Festive words!';
-            else return;
-            currentEvent = eventName;
-            document.getElementById('event-banner').innerText = eventName;
+            const event = getActiveEvent();
+            if (!event) {
+                document.getElementById('event-section')?.classList.add('hidden');
+                currentEvent = null;
+                return;
+            }
+            currentEvent = event.id;
+            document.getElementById('event-banner').innerText = `${event.name} — +${event.bonusPercent}% points & XP while it lasts!`;
             document.getElementById('event-section').classList.remove('hidden');
         }
 
@@ -4492,6 +4668,7 @@ function onTouchEnd() {
                     await addPoints(200);
                     await addXP(100);
                     await addHoney(20);
+                    await recordSimulatorResult(simulatorRound);
                 }
             } else {
                 document.getElementById('sim-msg').innerHTML = `❌ Incorrect! You are eliminated. The word was "${simulatorCurrentWord}".`;
@@ -4499,8 +4676,49 @@ function onTouchEnd() {
                 document.getElementById('sim-spell').disabled = true;
                 document.getElementById('sim-submit').disabled = true;
                 playSound('wrong');
+                await recordSimulatorResult(simulatorRound);
             }
         });
+
+        // ---------- Simulator all-time leaderboard ----------
+        async function recordSimulatorResult(roundReached) {
+            const isNewPersonalBest = roundReached > (currentUser.bestSimulatorRound || 0);
+            if (isNewPersonalBest) {
+                currentUser.bestSimulatorRound = roundReached;
+                try {
+                    await updateDoc(doc(db, "users", currentUser.id), { bestSimulatorRound: roundReached });
+                    showToast(`🎉 New personal best: round ${roundReached}!`, "success");
+                } catch (e) {
+                    console.error("Failed to save simulator result:", e);
+                }
+            }
+            loadSimulatorLeaderboard();
+        }
+
+        async function loadSimulatorLeaderboard() {
+            const container = document.getElementById('sim-leaderboard-list');
+            if (!container) return;
+            container.innerHTML = '<p style="opacity:0.6;">Loading...</p>';
+            try {
+                const usersSnap = await getDocs(collection(db, "users"));
+                const ranked = usersSnap.docs
+                    .map(d => ({ id: d.id, best: d.data().bestSimulatorRound || 0 }))
+                    .filter(u => u.best > 0)
+                    .sort((a, b) => b.best - a.best)
+                    .slice(0, 10);
+                if (ranked.length === 0) {
+                    container.innerHTML = '<p style="opacity:0.6;">No one has set a record yet - be the first!</p>';
+                    return;
+                }
+                container.innerHTML = ranked.map((u, i) => {
+                    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`;
+                    return `<div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid rgba(246,235,214,0.08);"><span>${medal} ${escapeHTML(u.id)}</span><span>Round ${u.best}</span></div>`;
+                }).join('');
+            } catch (e) {
+                console.error("Failed to load simulator leaderboard:", e);
+                container.innerHTML = '<p style="opacity:0.6;">Couldn\'t load the leaderboard right now.</p>';
+            }
+        }
 
         // ========== Missing Functions ==========
         function updateProblemWordsList() {
@@ -4699,6 +4917,19 @@ function onTouchEnd() {
             }
         }
 
+        async function loadAppConfig() {
+            try {
+                const snap = await getDoc(doc(db, "config", "appSettings"));
+                if (snap.exists()) {
+                    appConfig = { rankedListId: "all", activeEventId: null, ...snap.data() };
+                } else {
+                    await setDoc(doc(db, "config", "appSettings"), appConfig);
+                }
+            } catch (e) {
+                console.error("Failed to load app config, using defaults:", e);
+            }
+        }
+
         async function loadFriendRequests() {
             const requestsRef = collection(db, "users", currentUser.id, "friendRequests");
             const snap = await getDocs(requestsRef);
@@ -4708,7 +4939,9 @@ function onTouchEnd() {
         }
 
         async function refreshDailyQuests() {
-            if (!currentUser.dailyQuests || currentUser.dailyQuests.length === 0) {
+            const todayKey = new Date().toISOString().slice(0, 10);
+            const needsNewQuests = !currentUser.dailyQuests || currentUser.dailyQuests.length === 0 || currentUser.dailyQuestsDate !== todayKey;
+            if (needsNewQuests) {
                 const available = getAvailableQuests();
                 if (available.length >= 3) {
                     const shuffled = [...available].sort(() => 0.5 - Math.random());
@@ -4717,7 +4950,11 @@ function onTouchEnd() {
                     dailyQuests = [];
                 }
                 currentUser.dailyQuests = dailyQuests;
-                await updateDoc(doc(db, "users", currentUser.id), { dailyQuests });
+                currentUser.dailyQuestsDate = todayKey;
+                await updateDoc(doc(db, "users", currentUser.id), { dailyQuests, dailyQuestsDate: todayKey });
+                // A fresh day's quests should reflect where the player already stands today -
+                // e.g. streak quests shouldn't say 0/3 if they're already on a 3-day streak.
+                if (currentUser.streak) updateQuestProgress('streak', currentUser.streak);
             } else {
                 dailyQuests = currentUser.dailyQuests;
             }
