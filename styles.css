@@ -556,6 +556,76 @@
         @keyframes slideIn { from { transform: translateX(420px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(420px); opacity: 0; } }
 
+        /* =========================================================
+           MOBILE CATEGORY NAVIGATION
+           On phones, instead of one long scrolling page with every
+           section stacked, content is grouped into categories (Play,
+           Challenges, Shop, Profile, Boards, Social, Admin) and only
+           the active one is shown, switched via a bottom nav bar.
+           Desktop/tablet layout (>768px) is completely unaffected.
+           ========================================================= */
+        #mobile-nav { display: none; }
+
+        @media (max-width: 768px) {
+            body { padding-bottom: 78px; }
+
+            /* Hide every category-tagged section by default, show only the active one */
+            [data-cat] { display: none !important; }
+            body[data-mobile-cat="play"] [data-cat="play"],
+            body[data-mobile-cat="challenges"] [data-cat="challenges"],
+            body[data-mobile-cat="shop"] [data-cat="shop"],
+            body[data-mobile-cat="profile"] [data-cat="profile"],
+            body[data-mobile-cat="boards"] [data-cat="boards"],
+            body[data-mobile-cat="social"] [data-cat="social"],
+            body[data-mobile-cat="admin"] [data-cat="admin"] {
+                display: block !important;
+            }
+            /* elements whose own JS toggles .hidden (e.g. game mode tabs, event
+               banner) still respect that - this just controls the outer category */
+            [data-cat].hidden { display: none !important; }
+
+            /* The old collapsible settings panel becomes redundant on mobile -
+               Profile/Social categories surface its contents directly instead */
+            #settings-toggle-btn { display: none !important; }
+            #settings-panel.hidden { display: block !important; }
+
+            #mobile-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0; left: 0; right: 0;
+                z-index: 1500;
+                background: rgba(15,10,7,0.96);
+                backdrop-filter: blur(14px);
+                border-top: 1px solid rgba(246,235,214,0.12);
+                padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+                justify-content: space-around;
+                box-shadow: 0 -8px 20px rgba(0,0,0,0.35);
+            }
+            .mobile-nav-btn {
+                background: none;
+                box-shadow: none;
+                color: var(--text);
+                opacity: 0.55;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 2px;
+                font-size: 0.68rem;
+                font-weight: 600;
+                padding: 6px 4px;
+                min-width: 44px;
+                border-radius: 12px;
+                transition: opacity 0.2s, background 0.2s, transform 0.15s var(--ease-smooth);
+            }
+            .mobile-nav-btn .icon { font-size: 1.25rem; line-height: 1; }
+            .mobile-nav-btn.active { opacity: 1; background: rgba(230,172,71,0.16); color: var(--honey-300); }
+            .mobile-nav-btn:active { transform: scale(0.92); }
+        }
+
+        @media (min-width: 769px) {
+            #mobile-nav { display: none !important; }
+        }
+
         @media (max-width: 600px) {
             body { padding: 10px; }
             .container { padding: 16px; border-radius: 20px; }

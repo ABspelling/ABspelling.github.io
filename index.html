@@ -152,14 +152,14 @@
                 </section>
 
                 <!-- Daily Bonus Section -->
-                <section id="daily-bonus-section">
+                <section id="daily-bonus-section" data-cat="play">
                     <h3 class="section-title">🎁 Daily Bonus</h3>
                     <button id="claim-daily-bonus-btn" class="daily-bonus-btn">Claim Daily Bonus</button>
                     <p id="daily-bonus-msg" class="msg"></p>
                 </section>
 
                 <!-- Tutorial -->
-                <section id="tutorial" class="hidden">
+                <section id="tutorial" class="hidden" data-cat="play">
                     <h3 class="section-title">📘 Tutorial</h3>
                     <p>Welcome! Here's how to play:</p>
                     <ul>
@@ -185,7 +185,7 @@
                 <!-- Collapsible Settings & Profile Panel -->
                 <div id="settings-panel" class="hidden">
                     <!-- Profile Customization -->
-                    <section id="profile-section">
+                    <section id="profile-section" data-cat="profile">
                         <h3 class="section-title">👤 Profile</h3>
                         <div class="profile-header">
                             <div id="avatar-preview" style="font-size:3rem; width:80px; height:80px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#333;"></div>
@@ -231,7 +231,7 @@
                     </section>
 
                     <!-- Stats -->
-                    <section id="stats-section">
+                    <section id="stats-section" data-cat="profile">
                         <h3 class="section-title">📊 Statistics</h3>
                         <div class="stat-grid">
                             <div class="stat-card">Accuracy: <span id="stat-accuracy">0%</span></div>
@@ -259,13 +259,13 @@
                     </section>
 
                     <!-- Achievements -->
-                    <section id="achievements-section">
+                    <section id="achievements-section" data-cat="profile">
                         <h3 class="section-title">🏆 Achievements</h3>
                         <div id="achievements-list" style="display:grid; grid-template-columns:repeat(2,1fr); gap:10px;"></div>
                     </section>
 
                     <!-- Friends -->
-                    <section id="friends-section">
+                    <section id="friends-section" data-cat="social">
                         <h3 class="section-title">👥 Friends</h3>
                         <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px;">
                             <input type="text" id="friend-username" placeholder="Enter username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
@@ -275,7 +275,7 @@
                     </section>
 
                     <!-- Backup / Export -->
-                    <section id="backup-section">
+                    <section id="backup-section" data-cat="profile">
                         <h3 class="section-title">💾 Backup / Export</h3>
                         <div style="display:flex; gap:10px; flex-wrap:wrap;">
                             <button id="export-data-btn">Export Progress</button>
@@ -286,7 +286,7 @@
                     </section>
 
                     <!-- Settings -->
-                    <section>
+                    <section id="app-settings-section" data-cat="profile">
                         <h3 class="section-title">⚙️ Settings</h3>
                         <div class="settings-panel">
                             <label class="toggle-switch"><input type="checkbox" id="congrats-toggle" checked><span class="slider"></span></label>
@@ -303,37 +303,11 @@
                     </section>
 
                     <!-- Install App Button -->
-                    <button id="install-app-btn" style="width:100%; margin-top:15px; background:var(--success);">📱 Install App (Add to Home Screen)</button>
+                    <button id="install-app-btn" data-cat="profile" style="width:100%; margin-top:15px; background:var(--success);">📱 Install App (Add to Home Screen)</button>
                 </div>
 
-                <!-- Live Play -->
-                <section id="live-play-section" class="hidden">
-                    <h3 class="section-title">🎮 Live Play</h3>
-                    <div id="live-room">
-                        <p>You are in a live game with <span id="live-opponent"></span>.</p>
-                        <p>Word <span id="live-word-num">1</span>/5</p>
-                        <button id="live-hear-btn" class="big-btn">🔊 Hear Word</button>
-                        <div class="action-row">
-                            <input type="text" id="live-spell" placeholder="Spell..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-                            <button id="live-submit-btn">Check</button>
-                            <button id="live-show-meaning-btn" style="background:var(--info);">📖 Show Meaning</button>
-                        </div>
-                        <div id="live-meaning-display" class="definition-box hidden"></div>
-                        <p id="live-msg" class="msg"></p>
-                        <div id="live-score" style="display:flex; justify-content:space-between; margin-top:10px;">
-                            <span>Your score: <span id="live-my-score">0</span></span>
-                            <span>Opponent score: <span id="live-opp-score">0</span></span>
-                        </div>
-                        <button id="live-quit-btn" style="background:var(--danger);">Quit Game</button>
-                    </div>
-                    <div id="live-lobby" class="hidden">
-                        <p>Finding an opponent... <button id="cancel-matchmaking">Cancel</button></p>
-                    </div>
-                    <button id="find-match-btn" class="big-btn">Find Match</button>
-                </section>
-
                 <!-- Power-ups -->
-                <section id="powerups-section">
+                <section id="powerups-section" data-cat="play">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                         <h3 class="section-title" style="margin: 0;">⚡ Power-Ups</h3>
                         <button id="powerup-toggle-btn" style="display: none; background: rgba(255,255,255,0.1); border: none; color: white; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.9rem;">Show</button>
@@ -354,12 +328,12 @@
                 </section>
 
                 <!-- Seasonal Event -->
-                <section id="event-section" class="hidden">
+                <section id="event-section" class="hidden" data-cat="play">
                     <div class="event-banner" id="event-banner"></div>
                 </section>
 
                 <!-- Word of the Day -->
-                <section id="word-of-day-section" class="hidden">
+                <section id="word-of-day-section" class="hidden" data-cat="play">
                     <h3 class="section-title">📅 Word of the Day</h3>
                     <p>Bonus XP: <span id="word-of-day-bonus">20</span> | Bonus Points: <span id="word-of-day-points">15</span> | Bonus 🍯: <span id="word-of-day-honey">5</span></p>
                     <div class="action-row">
@@ -372,7 +346,7 @@
                 </section>
 
                 <!-- Import Word Lists -->
-                <section id="import-lists-section" class="hidden">
+                <section id="import-lists-section" class="hidden" data-cat="admin">
                     <h3 class="section-title">📚 Import Word Lists</h3>
                     <div style="display:flex; gap:10px; flex-wrap:wrap;">
                         <button data-list="sat">SAT Vocabulary</button>
@@ -384,7 +358,7 @@
                 </section>
 
                 <!-- Admin Panel (simplified teacher dashboard) -->
-                <section id="admin-panel" class="hidden" style="border-left:5px solid var(--secondary);">
+                <section id="admin-panel" class="hidden" style="border-left:5px solid var(--secondary);" data-cat="admin">
                     <h3 class="section-title">🛠️ Admin Terminal</h3>
                     <!-- Word management (global) -->
                     <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px;">
@@ -487,7 +461,7 @@
                 </section>
 
                 <!-- Quiz Area -->
-                <section id="quiz-area">
+                <section id="quiz-area" data-cat="play">
                     <div class="voice-selector">
                         <select id="voice-select"><option value="">Loading voices...</option></select>
                         <select id="accent-select" style="margin-top:5px;">
@@ -515,10 +489,8 @@
                         <button class="tab active" data-mode="classic">Classic</button>
                         <button class="tab" data-mode="challenge" id="challenge-tab" disabled>⏳ Challenge (lvl15)</button>
                         <button class="tab" data-mode="ranked" id="ranked-tab" disabled>🏆 Ranked (lvl30)</button>
-                        <button class="tab" data-mode="live" id="live-tab" disabled>🎮 Live (lvl50)</button>
                         <button class="tab" data-mode="unseen" id="unseen-tab">👁️ Unseen (Live API)</button>
                         <button class="tab" data-mode="public">🌍 Public</button>
-                        <button class="tab" data-mode="tournament" id="tournament-tab">🏆 Tournament</button>
                         <button class="tab" data-mode="local" id="local-tab">👥 Local Play</button>
                         <button class="tab" data-mode="simulator" id="simulator-tab">🎙️ Spelling Bee Simulator</button>
                     </div>
@@ -576,12 +548,6 @@
                         <p id="ranked-msg" class="msg"></p>
                     </div>
 
-                    <!-- Live Mode -->
-                    <div id="live-mode" class="hidden">
-                        <p style="text-align:center;">🎮 Live Play – Find an opponent to start!</p>
-                        <button id="find-match-from-tab" class="big-btn">Find Match</button>
-                    </div>
-
                     <!-- Unseen Mode (NOW FULLY IMPLEMENTED) -->
                     <div id="unseen-mode" class="hidden">
                         <div class="difficulty-selector">
@@ -632,15 +598,6 @@
                     </div>
 
                     <!-- Tournament Mode (rebuilt: now backed by a shared Firestore doc so everyone sees the same lobby/bracket) -->
-                    <div id="tournament-mode" class="hidden">
-                        <h4>🏆 Spelling Bee Tournament</h4>
-                        <p>Join the lobby, then an admin starts the bracket once enough players are in.</p>
-                        <button id="join-tournament-btn" class="big-btn">Join Tournament</button>
-                        <button id="leave-tournament-btn" class="hidden" style="width:100%; background:var(--danger); margin-top:8px;">Leave Lobby</button>
-                        <button id="admin-start-tournament-btn" class="hidden" style="width:100%; background:var(--secondary); margin-top:8px;">🚀 Start Tournament (Admin)</button>
-                        <div id="tournament-bracket" class="tournament-bracket"></div>
-                    </div>
-
                     <!-- Local Multiplayer (pass‑and‑play) -->
                     <div id="local-mode" class="hidden">
                         <h4>👥 Local Multiplayer (Pass & Play)</h4>
@@ -685,7 +642,7 @@
                 </section>
 
                 <!-- Leaderboards (global, all users) -->
-                <section>
+                <section id="leaderboards-section" data-cat="boards">
     <h3 class="section-title">🏆 Leaderboards</h3>
     <div class="tabs">
         <button class="tab active" data-leaderboard="score">Score</button>
@@ -730,7 +687,7 @@
 </section>
 
                 <!-- Themes Shop -->
-                <section>
+                <section id="shop-section" data-cat="shop">
                     <h3 class="section-title">🛒 Themes & Skins</h3>
                     <div class="shop-grid" id="themes-grid"></div>
                     <div style="margin-top:15px;">
@@ -740,13 +697,13 @@
                 </section>
 
                 <!-- Logout button -->
-                <button onclick="location.reload()" style="width:100%; margin-top:15px; background:transparent; color:var(--danger); border:1.5px solid var(--danger); font-weight:800; padding:16px;">LOGOUT SESSION</button>
+                <button onclick="location.reload()" data-cat="profile" style="width:100%; margin-top:15px; background:transparent; color:var(--danger); border:1.5px solid var(--danger); font-weight:800; padding:16px;">LOGOUT SESSION</button>
             </div> <!-- end main-col -->
 
             <div class="side-col">
                 <!-- Discord Community -->
                 <!-- ⚠️ PLACEHOLDER: replace href below with your real Discord invite link (e.g. https://discord.gg/yourcode) -->
-                <section id="discord-section" style="text-align:center;">
+                <section id="discord-section" style="text-align:center;" data-cat="social">
                     <h3 class="section-title" style="justify-content:center;">💬 Join Our Discord</h3>
                     <p style="font-size:0.9rem; opacity:0.8; margin-top:0;">Chat with other players, share your streaks, and get updates.</p>
                     <a href="https://discord.gg/YOUR-INVITE-CODE-HERE" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
@@ -755,31 +712,41 @@
                 </section>
 
                 <!-- Daily Quests with Reroll Button -->
-                <section id="quests-section">
+                <section id="quests-section" data-cat="profile">
                     <h3 class="section-title">📋 Daily Quests <button id="reroll-quests-btn" class="badge" style="background:var(--info); font-size:0.8rem;">🔄 Reroll (5 🍯)</button></h3>
                     <div id="quests-list"></div>
                 </section>
 
                 <!-- Word Mastery (recent words) -->
-                <section id="mastery-section">
+                <section id="mastery-section" data-cat="profile">
                     <h3 class="section-title">🌟 Word Mastery</h3>
                     <div id="mastery-list" style="max-height:200px; overflow-y:auto;"></div>
                 </section>
 
                 <!-- Friend Requests -->
-                <section id="friend-requests-section">
+                <section id="friend-requests-section" data-cat="social">
                     <h3 class="section-title">📩 Friend Requests</h3>
                     <div id="friend-requests-list"></div>
                 </section>
 
                 <!-- Friend Challenges -->
-                <section id="friend-challenges-section">
+                <section id="friend-challenges-section" data-cat="challenges">
                     <h3 class="section-title">🤝 Friend Challenges <span id="section-challenge-badge" class="notification-badge hidden">0</span></h3>
                     <div id="incoming-challenges-list"></div>
                 </section>
 
+                <!-- Tournament (moved out of the mode tabs - it's a challenge format, not a solo mode) -->
+                <section id="tournament-mode" data-cat="challenges">
+                    <h3 class="section-title">🏆 Tournament</h3>
+                    <p>Join the lobby, then an admin starts the bracket once enough players are in.</p>
+                    <button id="join-tournament-btn" class="big-btn">Join Tournament</button>
+                    <button id="leave-tournament-btn" class="hidden" style="width:100%; background:var(--danger); margin-top:8px;">Leave Lobby</button>
+                    <button id="admin-start-tournament-btn" class="hidden" style="width:100%; background:var(--secondary); margin-top:8px;">🚀 Start Tournament (Admin)</button>
+                    <div id="tournament-bracket" class="tournament-bracket"></div>
+                </section>
+
                 <!-- 1v1 Challenge a Friend (with settings) -->
-                <section id="challenge-friend-section">
+                <section id="challenge-friend-section" data-cat="challenges">
                     <h3 class="section-title">⚔️ Challenge a Friend</h3>
                     <select id="challenge-friend-select" disabled>
                         <option value="">Select a friend</option>
@@ -828,7 +795,7 @@
                 </section>
 
                 <!-- Challenge Gameplay Room -->
-                <section id="challenge-game-room" class="hidden">
+                <section id="challenge-game-room" class="hidden" data-cat="challenges">
                     <h3 class="section-title">⚔️ Challenge</h3>
                     <div class="challenge-game-header">
                         <div>vs <span id="challenge-opponent-name">Opponent</span></div>
@@ -852,12 +819,23 @@
                 </section>
 
                 <!-- Statistics Graph (simple) -->
-                <section id="stats-graph-section">
+                <section id="stats-graph-section" data-cat="profile">
                     <h3 class="section-title">📈 Last 7 Days</h3>
                     <canvas id="stats-canvas" width="300" height="150" style="background:rgba(0,0,0,0.2); border-radius:16px;"></canvas>
                 </section>
             </div> <!-- end side-col -->
         </div> <!-- end app-grid -->
+
+        <!-- Mobile category navigation (phones only - see styles.css) -->
+        <nav id="mobile-nav" aria-label="Section navigation">
+            <button class="mobile-nav-btn active" data-cat-btn="play" aria-label="Play"><span class="icon">🎮</span>Play</button>
+            <button class="mobile-nav-btn" data-cat-btn="challenges" aria-label="Challenges"><span class="icon">⚔️</span>Challenges</button>
+            <button class="mobile-nav-btn" data-cat-btn="shop" aria-label="Shop"><span class="icon">🛒</span>Shop</button>
+            <button class="mobile-nav-btn" data-cat-btn="boards" aria-label="Leaderboards"><span class="icon">🏆</span>Boards</button>
+            <button class="mobile-nav-btn" data-cat-btn="social" aria-label="Social"><span class="icon">👥</span>Social</button>
+            <button class="mobile-nav-btn" data-cat-btn="profile" aria-label="Profile"><span class="icon">👤</span>Profile</button>
+            <button class="mobile-nav-btn hidden" id="mobile-nav-admin-btn" data-cat-btn="admin" aria-label="Admin"><span class="icon">🛠️</span>Admin</button>
+        </nav>
     </div> <!-- end app-screen -->
 
     <!-- Backdrop for mandatory password setup - blocks all interaction with the app behind it -->
@@ -989,6 +967,27 @@
                 body.style.opacity = '1';
             }, 180);
         }
+
+        // ---------- Mobile category navigation ----------
+        function setMobileCategory(cat) {
+            document.body.dataset.mobileCat = cat;
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.catBtn === cat);
+            });
+            if (cat === 'admin') {
+                // Admin panel content is normally gated behind the desktop-only
+                // "Admin" toggle button - opening it here so mobile admins can
+                // actually see it without hunting for that button first.
+                document.getElementById('admin-panel')?.classList.remove('hidden');
+                document.getElementById('import-lists-section')?.classList.remove('hidden');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => setMobileCategory(btn.dataset.catBtn));
+        });
+        // Starts on the Play category (matches the nav bar's default active state above)
+        document.body.dataset.mobileCat = 'play';
 
         function escapeHTML(str) {
             if (str === null || str === undefined) return '';
@@ -1281,14 +1280,6 @@
         const customWordsRef = collection(db, "customWords");
         let publicWordDeck = [];
         let currentPublicWord = "";
-        let liveGameId = null;
-        let liveGameRef = null;
-        let liveUnsubscribe = null;
-        let myTurn = false;
-        let myWords = [];
-        let opponentWords = [];
-        let myScore = 0;
-        let oppScore = 0;
         let currentWordIndex = 0;
         let challengeWordsSpelled = [];
         let challengeCount = 0;
@@ -1933,6 +1924,7 @@
 
             if (masterAdmin || isAdmin) {
                 document.getElementById('admin-toggle-btn').classList.remove('hidden');
+                document.getElementById('mobile-nav-admin-btn').classList.remove('hidden');
                 if (masterAdmin) {
                     document.getElementById('role-badge').innerText = "MASTER ADMIN";
                 } else {
@@ -1951,7 +1943,6 @@
 
             if (currentUser.level >= 15) document.getElementById('challenge-tab').disabled = false;
             if (currentUser.level >= 30) document.getElementById('ranked-tab').disabled = false;
-            if (currentUser.level >= 50) document.getElementById('live-tab').disabled = false;
 
             checkSeasonalEvent();
             await fetchWords();  // important: fetch words before word of day
@@ -2004,15 +1995,7 @@
                 document.getElementById('challenge-meaning-display').classList.remove('hidden');
             });
 
-            document.getElementById('live-show-meaning-btn')?.addEventListener('click', async () => {
-                if (!currentWord) { document.getElementById('live-msg').innerText = "No word to show meaning for."; return; }
-                const definition = await fetchDefinition(currentWord);
-                document.getElementById('live-meaning-display').innerText = `📖 ${definition}`;
-                document.getElementById('live-meaning-display').classList.remove('hidden');
-            });
-
             setupPublicMode();
-            setupLivePlay();
             updatePowerupsDisplay();
 
             document.getElementById('list-select').addEventListener('change', handleListChange);
@@ -2849,8 +2832,9 @@ function onTouchEnd() {
                         player2Words: playerWords,
                         player1Score: 0,
                         player2Score: 0,
+                        player1WordIndex: 0,
+                        player2WordIndex: 0,
                         turn: Math.random() < 0.5 ? from : currentUser.id,
-                        currentWordIndex: 0,
                         status: 'active',
                         createdAt: serverTimestamp(),
                         timeLimit: chData.timeLimit || 0
@@ -2934,10 +2918,11 @@ function onTouchEnd() {
                 if (challengeGameState.currentGame) {
                     const isPlayer1 = challengeGameState.currentGame.player1 === currentUser.id;
                     const wordList = isPlayer1 ? challengeGameState.currentGame.player1Words : challengeGameState.currentGame.player2Words;
-                    const word = wordList[challengeGameState.currentGame.currentWordIndex];
+                    const myWordIndex = isPlayer1 ? (challengeGameState.currentGame.player1WordIndex || 0) : (challengeGameState.currentGame.player2WordIndex || 0);
+                    const word = wordList[myWordIndex];
                     if (word) {
                         speakWord(word);
-                        challengeGameState.heardWords.add(challengeGameState.currentGame.currentWordIndex);
+                        challengeGameState.heardWords.add(myWordIndex);
                         document.getElementById('friend-challenge-hear-btn').disabled = true;
                     }
                 }
@@ -3022,17 +3007,18 @@ function onTouchEnd() {
                 const isPlayer1 = gameData.player1 === currentUser.id;
                 const myScore = isPlayer1 ? gameData.player1Score : gameData.player2Score;
                 const opponentScore = isPlayer1 ? gameData.player2Score : gameData.player1Score;
+                const myWordIndex = isPlayer1 ? (gameData.player1WordIndex || 0) : (gameData.player2WordIndex || 0);
 
                 document.getElementById('challenge-my-score').textContent = myScore;
                 document.getElementById('challenge-opponent-score').textContent = opponentScore;
-                document.getElementById('challenge-word-index').textContent = gameData.currentWordIndex + 1;
+                document.getElementById('challenge-word-index').textContent = Math.min(myWordIndex + 1, gameData.player1Words.length);
                 document.getElementById('challenge-total-words').textContent = gameData.player1Words.length;
 
                 const isMyTurn = gameData.turn === currentUser.id;
                 document.getElementById('challenge-word-input').disabled = !isMyTurn;
                 document.getElementById('challenge-submit-btn').disabled = !isMyTurn;
 
-                const hasHeardCurrentWord = challengeGameState.heardWords.has(gameData.currentWordIndex);
+                const hasHeardCurrentWord = challengeGameState.heardWords.has(myWordIndex);
                 document.getElementById('friend-challenge-hear-btn').disabled = hasHeardCurrentWord;
 
                 if (gameData.status === 'finished') {
@@ -3075,7 +3061,8 @@ function onTouchEnd() {
 
             const isPlayer1 = gameData.player1 === currentUser.id;
             const wordList = isPlayer1 ? gameData.player1Words : gameData.player2Words;
-            const correctWord = wordList[gameData.currentWordIndex];
+            const myWordIndex = isPlayer1 ? (gameData.player1WordIndex || 0) : (gameData.player2WordIndex || 0);
+            const correctWord = wordList[myWordIndex];
             const attempt = document.getElementById('challenge-word-input').value.trim().toLowerCase();
 
             if (!attempt && !timeUp) {
@@ -3085,24 +3072,39 @@ function onTouchEnd() {
 
             const isCorrect = attempt === correctWord.toLowerCase();
             const scoreField = isPlayer1 ? 'player1Score' : 'player2Score';
+            const indexField = isPlayer1 ? 'player1WordIndex' : 'player2WordIndex';
             const newScore = gameData[scoreField] + (isCorrect ? 1 : 0);
-            const nextWordIndex = gameData.currentWordIndex + 1;
-            const isGameFinished = nextWordIndex >= gameData.player1Words.length;
+            const myNextIndex = myWordIndex + 1;
+
+            // The game only ends once BOTH players have gone through all their words -
+            // not when a shared counter runs out, which used to split the word budget
+            // between the two players instead of giving each of them the full count.
+            const opponentWordIndex = isPlayer1 ? (gameData.player2WordIndex || 0) : (gameData.player1WordIndex || 0);
+            const totalWords = gameData.player1Words.length;
+            const iAmDone = myNextIndex >= totalWords;
+            const opponentAlreadyDone = opponentWordIndex >= totalWords;
+            const isGameFinished = iAmDone && opponentAlreadyDone;
+
+            // If my opponent already finished their words earlier, keep the turn on
+            // me (only I have words left) instead of alternating back to them.
+            const nextTurn = (!iAmDone && opponentAlreadyDone)
+                ? currentUser.id
+                : (isPlayer1 ? gameData.player2 : gameData.player1);
 
             // Store result
-            if (!challengeGameState.results[gameData.currentWordIndex]) {
-                challengeGameState.results[gameData.currentWordIndex] = {};
+            if (!challengeGameState.results[myWordIndex]) {
+                challengeGameState.results[myWordIndex] = {};
             }
             const playerKey = isPlayer1 ? 'player1' : 'player2';
-            challengeGameState.results[gameData.currentWordIndex][playerKey] = {
+            challengeGameState.results[myWordIndex][playerKey] = {
                 attempt: attempt || '(no answer)',
                 correct: isCorrect
             };
 
             const updateData = {
                 [scoreField]: newScore,
-                currentWordIndex: nextWordIndex,
-                turn: isPlayer1 ? gameData.player2 : gameData.player1,
+                [indexField]: myNextIndex,
+                turn: nextTurn,
                 status: isGameFinished ? 'finished' : 'active',
                 results: challengeGameState.results
             };
@@ -3210,147 +3212,6 @@ function onTouchEnd() {
         });
 
         // Live Play
-        function setupLivePlay() {
-            const findMatchBtn = document.getElementById('find-match-btn');
-            const findMatchFromTab = document.getElementById('find-match-from-tab');
-            const cancelMatchmaking = document.getElementById('cancel-matchmaking');
-            const liveQuitBtn = document.getElementById('live-quit-btn');
-            const liveSubmit = document.getElementById('live-submit-btn');
-            const liveHear = document.getElementById('live-hear-btn');
-
-            findMatchBtn.addEventListener('click', startMatchmaking);
-            findMatchFromTab.addEventListener('click', startMatchmaking);
-            cancelMatchmaking.addEventListener('click', cancelMatchmakingFn);
-            liveQuitBtn.addEventListener('click', quitLiveGame);
-            liveSubmit.addEventListener('click', submitLiveWord);
-            liveHear.addEventListener('click', () => { if (currentWord) speakWord(currentWord); });
-        }
-
-        async function startMatchmaking() {
-            document.getElementById('live-lobby').classList.remove('hidden');
-            document.getElementById('live-room').classList.add('hidden');
-            document.getElementById('find-match-btn').disabled = true;
-            document.getElementById('find-match-from-tab').disabled = true;
-
-            const matchmakingRef = collection(db, "matchmaking");
-            const q = query(matchmakingRef, where("status", "==", "waiting"));
-            const snap = await getDocs(q);
-            let opponent = null;
-            if (!snap.empty()) {
-                const match = snap.docs[0];
-                opponent = match.data().userId;
-                await deleteDoc(match.ref);
-                const gameId = `game_${Date.now()}`;
-                await setDoc(doc(db, "games", gameId), {
-                    player1: opponent,
-                    player2: currentUser.id,
-                    player1Words: getFilteredWords().sort(()=>0.5-Math.random()).slice(0,5),
-                    player2Words: getFilteredWords().sort(()=>0.5-Math.random()).slice(0,5),
-                    player1Score: 0,
-                    player2Score: 0,
-                    turn: Math.random() < 0.5 ? opponent : currentUser.id,
-                    currentWordIndex: 0,
-                    status: 'active',
-                    createdAt: serverTimestamp()
-                });
-                joinLiveGame(gameId, opponent);
-            } else {
-                await addDoc(matchmakingRef, { userId: currentUser.id, status: "waiting", timestamp: serverTimestamp() });
-                const waitForMatch = setInterval(async () => {
-                    const games = await getDocs(query(collection(db, "games"), where("player2", "==", currentUser.id), where("status", "==", "active")));
-                    if (!games.empty) {
-                        clearInterval(waitForMatch);
-                        const game = games.docs[0];
-                        joinLiveGame(game.id, game.data().player1);
-                    }
-                }, 2000);
-                setTimeout(() => {
-                    clearInterval(waitForMatch);
-                    if (document.getElementById('live-lobby').classList.contains('hidden')) return;
-                    alert("No opponent found. Try again.");
-                    cancelMatchmakingFn();
-                }, 30000);
-            }
-        }
-
-        function joinLiveGame(gameId, opponentName) {
-            document.getElementById('live-lobby').classList.add('hidden');
-            document.getElementById('live-room').classList.remove('hidden');
-            document.getElementById('live-opponent').innerText = opponentName;
-            liveGameId = gameId;
-            liveGameRef = doc(db, "games", gameId);
-            liveUnsubscribe = onSnapshot(liveGameRef, (doc) => {
-                const data = doc.data();
-                if (!data) return;
-                if (data.status === 'finished') {
-                    alert(`Game over! You scored ${data.player1Score || 0} - ${data.player2Score || 0}`);
-                    quitLiveGame();
-                    return;
-                }
-                const isPlayer1 = data.player1 === currentUser.id;
-                myWords = isPlayer1 ? data.player1Words : data.player2Words;
-                opponentWords = isPlayer1 ? data.player2Words : data.player1Words;
-                myScore = isPlayer1 ? data.player1Score : data.player2Score;
-                oppScore = isPlayer1 ? data.player2Score : data.player1Score;
-                document.getElementById('live-my-score').innerText = myScore;
-                document.getElementById('live-opp-score').innerText = oppScore;
-                document.getElementById('live-word-num').innerText = data.currentWordIndex+1;
-                myTurn = data.turn === currentUser.id;
-                if (myTurn && data.currentWordIndex < 5) {
-                    currentWord = myWords[data.currentWordIndex];
-                    document.getElementById('live-spell').disabled = false;
-                    document.getElementById('live-submit-btn').disabled = false;
-                    document.getElementById('live-msg').innerText = "Your turn!";
-                } else {
-                    document.getElementById('live-spell').disabled = true;
-                    document.getElementById('live-submit-btn').disabled = true;
-                    document.getElementById('live-msg').innerText = "Opponent's turn...";
-                }
-            });
-        }
-
-        function cancelMatchmakingFn() {
-            const matchmakingRef = collection(db, "matchmaking");
-            getDocs(query(matchmakingRef, where("userId", "==", currentUser.id))).then(snap => {
-                snap.forEach(d => d.ref.delete());
-            });
-            document.getElementById('live-lobby').classList.add('hidden');
-            document.getElementById('find-match-btn').disabled = false;
-            document.getElementById('find-match-from-tab').disabled = false;
-        }
-
-        async function submitLiveWord() {
-            const attempt = document.getElementById('live-spell').value.trim().toLowerCase();
-            const gameSnap = await getDoc(liveGameRef);
-            const data = gameSnap.data();
-            const isPlayer1 = data.player1 === currentUser.id;
-            const myWordsList = isPlayer1 ? data.player1Words : data.player2Words;
-            const correctWord = myWordsList[data.currentWordIndex];
-            if (attempt === correctWord) {
-                myScore++;
-                playSound('correct');
-            } else {
-                playSound('wrong');
-            }
-            document.getElementById('live-spell').value = '';
-            const update = {
-                player1Score: isPlayer1 ? myScore : data.player1Score,
-                player2Score: isPlayer1 ? data.player2Score : myScore,
-                turn: isPlayer1 ? data.player2 : data.player1,
-                currentWordIndex: data.currentWordIndex + 1
-            };
-            if (update.currentWordIndex >= 5) update.status = 'finished';
-            await updateDoc(liveGameRef, update);
-        }
-
-        function quitLiveGame() {
-            if (liveUnsubscribe) liveUnsubscribe();
-            liveGameId = null;
-            document.getElementById('live-room').classList.add('hidden');
-            document.getElementById('find-match-btn').disabled = false;
-            document.getElementById('find-match-from-tab').disabled = false;
-        }
-
         // ---------- Leaderboards ----------
         function setupLeaderboards() {
             const usersQuery = query(collection(db, "users"));
@@ -3562,7 +3423,6 @@ function onTouchEnd() {
             if (leveled) {
                 if (currentUser.level === 15) document.getElementById('challenge-tab').disabled = false;
                 if (currentUser.level === 30) document.getElementById('ranked-tab').disabled = false;
-                if (currentUser.level === 50) document.getElementById('live-tab').disabled = false;
                 if (currentUser.level >= 10) await checkAndUnlockAchievement('level-10');
                 if (currentUser.level >= 50) await checkAndUnlockAchievement('unstoppable');
                 updatePowerupsDisplay();
@@ -3774,10 +3634,8 @@ function onTouchEnd() {
                     document.getElementById('classic-mode').classList.add('hidden');
                     document.getElementById('challenge-mode').classList.add('hidden');
                     document.getElementById('ranked-mode').classList.add('hidden');
-                    document.getElementById('live-mode').classList.add('hidden');
                     document.getElementById('unseen-mode').classList.add('hidden');
                     document.getElementById('public-mode').classList.add('hidden');
-                    document.getElementById('tournament-mode').classList.add('hidden');
                     document.getElementById('local-mode').classList.add('hidden');
                     document.getElementById('simulator-mode').classList.add('hidden');
 
@@ -3800,7 +3658,6 @@ function onTouchEnd() {
                         const lockedListName = currentListId === 'all' ? 'All Lists' : (listsData.find(l => l.id === currentListId)?.name || currentListId);
                         document.getElementById('ranked-locked-note').innerText = `🔒 Ranked always uses: ${lockedListName}`;
                     }
-                    else if (mode === 'live') document.getElementById('live-mode').classList.remove('hidden');
                     else if (mode === 'unseen') document.getElementById('unseen-mode').classList.remove('hidden');
                     else if (mode === 'public') {
                         document.getElementById('public-mode').classList.remove('hidden');
@@ -3809,7 +3666,6 @@ function onTouchEnd() {
                         document.getElementById('public-create-btn').classList.remove('active');
                         document.getElementById('public-play-btn').classList.add('active');
                     }
-                    else if (mode === 'tournament') document.getElementById('tournament-mode').classList.remove('hidden');
                     else if (mode === 'local') document.getElementById('local-mode').classList.remove('hidden');
                     else if (mode === 'simulator') {
                         document.getElementById('simulator-mode').classList.remove('hidden');
@@ -4724,8 +4580,9 @@ function onTouchEnd() {
                     player2Words: words,
                     player1Score: 0,
                     player2Score: 0,
+                    player1WordIndex: 0,
+                    player2WordIndex: 0,
                     turn: match.p1,
-                    currentWordIndex: 0,
                     status: 'active',
                     createdAt: serverTimestamp(),
                     timeLimit: 0
