@@ -66,6 +66,7 @@
             </div>
             <button id="login-btn" style="margin-top:10px;">Join Match</button>
             <button id="goto-games-btn" style="background: var(--info); margin-top: 8px;">🎮 Go to Games</button>
+            <button id="goto-science-btn" style="background: #22c55e; margin-top: 8px;">🔬 Study Science</button>
             <button id="forgot-password-btn" style="background:transparent; box-shadow:none; text-decoration:underline; color:var(--secondary); padding:6px; font-weight:500;">Forgot password?</button>
         </div>
         <p id="login-msg" class="msg" style="color:var(--danger);"></p>
@@ -109,6 +110,15 @@
             window.location.href = 'games.html';
         });
     </script>
+    <script>
+    document.getElementById('goto-games-btn')?.addEventListener('click', () => {
+        window.location.href = 'games.html';
+    });
+
+    document.getElementById('goto-science-btn')?.addEventListener('click', () => {
+        window.location.href = 'ScienceStudy.html';
+    });
+</script>
     <!-- Main App Screen -->
     <div id="offline-banner" class="hidden" style="position:fixed; top:0; left:0; right:0; z-index:2000; background:var(--danger); color:#2a120a; text-align:center; padding:8px; font-weight:700; font-size:0.9rem;">
         ⚠️ You're offline — changes won't save until your connection comes back.
