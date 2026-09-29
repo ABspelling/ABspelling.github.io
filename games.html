@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Arcade Hub Ultra – 20 Games</title>
+    <title>Arcade Hub – 5 Games</title>
     <style>
         :root {
             --bg-color: #0f0f12;
@@ -15,6 +15,7 @@
             --text-muted: #94a3b8;
             --danger: #e74c3c;
             --success: #2ecc71;
+            --gold: #f1c40f;
         }
 
         * {
@@ -51,7 +52,7 @@
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 20px;
             width: 100%;
-            max-width: 1300px;
+            max-width: 1100px;
         }
 
         .game-card {
@@ -96,13 +97,9 @@
             transition: background 0.2s, transform 0.1s;
         }
 
-        button:hover {
-            background-color: var(--primary-hover);
-        }
-
-        button:active {
-            transform: scale(0.97);
-        }
+        button:hover { background-color: var(--primary-hover); }
+        button:active { transform: scale(0.97); }
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
 
         #game-stage {
             display: none;
@@ -117,14 +114,8 @@
             position: relative;
         }
 
-        .back-btn {
-            background-color: var(--danger);
-            margin-bottom: 20px;
-        }
-
-        .back-btn:hover {
-            background-color: #c0392b;
-        }
+        .back-btn { background-color: var(--danger); margin-bottom: 20px; }
+        .back-btn:hover { background-color: #c0392b; }
 
         .game-box {
             display: none;
@@ -141,23 +132,20 @@
             margin-top: 15px;
             max-width: 100%;
             cursor: pointer;
+            touch-action: none;
         }
 
         .click-btn {
-            width: 140px;
-            height: 140px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            font-size: 1.2rem;
-            background: linear-gradient(135deg, var(--primary), #a29bfe);
-            box-shadow: 0 8px 0 #473bb0, 0 10px 20px rgba(0, 0, 0, 0.4);
+            font-size: 3.2rem;
+            background: linear-gradient(135deg, #d9a441, #a86f1f);
+            box-shadow: 0 8px 0 #6b4712, 0 10px 20px rgba(0, 0, 0, 0.4);
             margin: 20px 0;
             border: none;
-            color: white;
         }
-        .click-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 2px 0 #473bb0;
-        }
+        .click-btn:active { transform: translateY(6px); box-shadow: 0 2px 0 #6b4712; }
 
         .upgrade-grid {
             display: grid;
@@ -167,97 +155,11 @@
             margin-top: 15px;
         }
 
-        .memory-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 20px;
-            width: 320px;
-        }
-        .memory-card {
-            width: 70px;
-            height: 70px;
-            background-color: var(--primary);
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: transparent;
-            user-select: none;
-        }
-        .memory-card.flipped {
-            background-color: #fff;
-            color: #000;
-        }
-        .memory-card.matched {
-            background-color: var(--success);
-            color: #fff;
-            visibility: hidden;
-        }
+        .market-ui { width: 100%; text-align: left; margin: 15px 0; }
+        .market-btn-group { display: flex; gap: 10px; width: 100%; margin-top: 10px; }
+        .market-btn-group button { flex: 1; }
 
-        .market-ui {
-            width: 100%;
-            text-align: left;
-            margin: 15px 0;
-        }
-        .market-btn-group {
-            display: flex;
-            gap: 10px;
-            width: 100%;
-            margin-top: 10px;
-        }
-        .market-btn-group button {
-            flex: 1;
-        }
-
-        .simon-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            width: 260px;
-            height: 260px;
-            margin: 20px 0;
-        }
-        .simon-pad {
-            border-radius: 12px;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.1s;
-        }
-        .simon-pad:active,
-        .simon-pad.active {
-            opacity: 1;
-            transform: scale(0.96);
-        }
-        #pad-0 {
-            background-color: #e74c3c;
-        }
-        #pad-1 {
-            background-color: #3498db;
-        }
-        #pad-2 {
-            background-color: #2ecc71;
-        }
-        #pad-3 {
-            background-color: #f1c40f;
-        }
-
-        .miner-display {
-            background: #222;
-            padding: 15px;
-            border-radius: 8px;
-            width: 100%;
-            text-align: left;
-            margin: 15px 0;
-        }
-
-        .board-row {
-            display: flex;
-            gap: 5px;
-            justify-content: center;
-        }
+        .board-row { display: flex; gap: 5px; justify-content: center; }
         .cell-btn {
             width: 70px;
             height: 70px;
@@ -268,275 +170,89 @@
             cursor: pointer;
         }
 
-        .mole-hole {
-            width: 70px;
-            height: 70px;
-            background: #4a3f2b;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin: 5px;
-            font-size: 2rem;
-            cursor: pointer;
-        }
-
-        .letter-btn {
-            width: 35px;
-            height: 35px;
-            margin: 3px;
-            font-weight: bold;
-        }
-
-        .minesweeper-cell {
-            width: 35px;
-            height: 35px;
-            background: #555;
-            border: 1px solid #666;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            cursor: pointer;
-            user-select: none;
-            font-size: 1rem;
-            margin: 1px;
-        }
-        .minesweeper-cell.revealed {
-            background: #bbb;
-            color: #000;
-            cursor: default;
-        }
-
-        /* responsive adjustments */
         @media (max-width: 600px) {
-            .cell-btn {
-                width: 55px;
-                height: 55px;
-                font-size: 1.6rem;
-            }
-            .memory-card {
-                width: 55px;
-                height: 55px;
-                font-size: 1.6rem;
-            }
+            .cell-btn { width: 55px; height: 55px; font-size: 1.6rem; }
+            .click-btn { width: 120px; height: 120px; font-size: 2.6rem; }
         }
     </style>
 </head>
 <body>
 
     <header id="main-header">
-        <h1>Arcade Hub Ultra</h1>
-        <p>20 fully working classic & original arcade games. Choose one and jump in!</p>
+        <h1>Arcade Hub</h1>
+        <p>5 fully working games. Choose one and jump in!</p>
     </header>
 
-    <!-- Dashboard Grid with 20 cards -->
     <div class="grid-container" id="dashboard">
-        <!-- 1-10 original games (labels slightly polished) -->
         <div class="game-card">
-            <h3>Pixel Clicker 2.0</h3>
-            <p>Idle / clicker with upgrades, autoclickers and critical hits.</p>
-            <button onclick="launchGame('clicker')">Play</button>
+            <h3>🍪 Cookie Clicker</h3>
+            <p>Click the cookie, hire cursors and grandmas, build a cookie empire.</p>
+            <button onclick="launchGame('cookie')">Play</button>
         </div>
         <div class="game-card">
-            <h3>Retro Snake</h3>
+            <h3>₿ Crypto Mining Sim</h3>
+            <p>Mine coins by hand or buy rigs for passive income. Sell when the price spikes.</p>
+            <button onclick="launchGame('crypto')">Play</button>
+        </div>
+        <div class="game-card">
+            <h3>🐍 Retro Snake</h3>
             <p>Classic snake. Eat, grow, avoid walls and yourself.</p>
             <button onclick="launchGame('snake')">Play</button>
         </div>
         <div class="game-card">
-            <h3>Emoji Match</h3>
-            <p>Memory card flip game with 16 emoji cards.</p>
-            <button onclick="launchGame('memory')">Play</button>
-        </div>
-        <div class="game-card">
-            <h3>Sky Drop</h3>
-            <p>Catch falling green nodes with a paddle. Speed increases.</p>
-            <button onclick="launchGame('skydrop')">Play</button>
-        </div>
-        <div class="game-card">
-            <h3>Crypto Trader Sim</h3>
-            <p>Volatile market simulator. Buy low, sell high, aim for $1M.</p>
-            <button onclick="launchGame('trader')">Play</button>
-        </div>
-        <div class="game-card">
-            <h3>Flappy Pixel</h3>
-            <p>Navigate through pipes. Tap/space to fly.</p>
-            <button onclick="launchGame('flappy')">Play</button>
-        </div>
-        <div class="game-card">
-            <h3>Brick Breaker</h3>
-            <p>Destroy all bricks with a ball and paddle.</p>
-            <button onclick="launchGame('breaker')">Play</button>
-        </div>
-        <div class="game-card">
-            <h3>Idle Miner RPG</h3>
-            <p>Mine ores, upgrade tools, hire workers, reach diamond.</p>
-            <button onclick="launchGame('miner')">Play</button>
-        </div>
-        <div class="game-card">
-            <h3>Simon Memory</h3>
-            <p>Repeat growing color sequences. Audio-visual challenge.</p>
-            <button onclick="launchGame('simon')">Play</button>
-        </div>
-        <div class="game-card">
-            <h3>Tower Stacker</h3>
-            <p>Stack moving slabs. Trim overhangs. Build the highest tower.</p>
-            <button onclick="launchGame('stacker')">Play</button>
-        </div>
-
-        <!-- NEW 10 games -->
-        <div class="game-card">
-            <h3>Tic Tac Toe</h3>
-            <p>Classic two‑player X vs O. No AI – grab a friend!</p>
+            <h3>❌⭕ Tic Tac Toe</h3>
+            <p>Classic two-player X vs O. No AI - grab a friend!</p>
             <button onclick="launchGame('tictactoe')">Play</button>
         </div>
         <div class="game-card">
-            <h3>2048</h3>
+            <h3>🔢 2048</h3>
             <p>Slide numbered tiles, merge them, reach 2048. Arrow keys.</p>
             <button onclick="launchGame('2048')">Play</button>
         </div>
-        <div class="game-card">
-            <h3>Whack-a-Mole</h3>
-            <p>Moles pop out! Click them fast. 30 seconds time attack.</p>
-            <button onclick="launchGame('whackamole')">Play</button>
-        </div>
-        <div class="game-card">
-            <h3>Dino Runner</h3>
-            <p>Endless runner. Jump over cacti. Space/click to jump.</p>
-            <button onclick="launchGame('dinorunner')">Play</button>
-        </div>
-        <div class="game-card">
-            <h3>Hangman</h3>
-            <p>Guess the hidden word letter by letter. 6 lives.</p>
-            <button onclick="launchGame('hangman')">Play</button>
-        </div>
-        <div class="game-card">
-            <h3>Reaction Time</h3>
-            <p>Wait for green, then click as fast as you can!</p>
-            <button onclick="launchGame('reaction')">Play</button>
-        </div>
-        <div class="game-card">
-            <h3>Quick Math</h3>
-            <p>Solve arithmetic problems under time pressure.</p>
-            <button onclick="launchGame('quickmath')">Play</button>
-        </div>
-        <div class="game-card">
-            <h3>Guess the Number</h3>
-            <p>I'm thinking of a number 1‑100. Can you find it?</p>
-            <button onclick="launchGame('guessnumber')">Play</button>
-        </div>
-        <div class="game-card">
-            <h3>Rock Paper Scissors</h3>
-            <p>Play against the computer. First to 5 wins.</p>
-            <button onclick="launchGame('rps')">Play</button>
-        </div>
-        <div class="game-card">
-            <h3>Mini Minesweeper</h3>
-            <p>8×8 grid, 10 mines. Reveal cells, flag mines.</p>
-            <button onclick="launchGame('minesweeper')">Play</button>
-        </div>
     </div>
 
-    <!-- Active game stage (all game boxes inside) -->
     <div id="game-stage">
         <button class="back-btn" onclick="exitToDashboard()">← Back to Dashboard</button>
 
-        <!-- original 10 boxes -->
-        <div id="game-clicker" class="game-box">
-            <h2>Pixel Clicker 2.0</h2>
-            <h1 id="click-count" style="margin-top:10px;">Pixels: 0</h1>
-            <p id="click-stats" style="color:var(--text-muted)">CPS: 0 | Multiplier: x1</p>
-            <button class="click-btn" onclick="registerClick()">CLICK!</button>
+        <!-- 1. Cookie Clicker -->
+        <div id="game-cookie" class="game-box">
+            <h2>Cookie Clicker</h2>
+            <h1 id="cookie-count" style="margin-top:10px;">Cookies: 0</h1>
+            <p id="cookie-stats" style="color:var(--text-muted)">Per second: 0 | Per click: 1</p>
+            <button class="click-btn" onclick="clickCookie()">🍪</button>
             <div class="upgrade-grid">
-                <button id="up-click" onclick="buyClickPower()">+1 Per Click (Cost: 10)</button>
-                <button id="up-auto" onclick="buyAutoClicker()">+1 Auto CPS (Cost: 15)</button>
+                <button id="buy-cursor-btn" onclick="buyCursor()">Cursor (+1 CPS) - 15</button>
+                <button id="buy-grandma-btn" onclick="buyGrandma()">Grandma (+5 CPS) - 100</button>
+                <button id="buy-clickpower-btn" onclick="buyClickPower()">+1 Per Click - 50</button>
+                <button id="buy-factory-btn" onclick="buyFactory()">Factory (+25 CPS) - 500</button>
             </div>
         </div>
 
+        <!-- 2. Crypto Mining Sim -->
+        <div id="game-crypto" class="game-box">
+            <h2>Crypto Mining Sim</h2>
+            <div class="market-ui">
+                <p>Cash: $<span id="crypto-cash">0.00</span></p>
+                <p>Coins mined: <span id="crypto-coins">0.0000</span> ⛃</p>
+                <p>Rigs owned: <span id="crypto-rigs">0</span> | Passive rate: <span id="crypto-rate">0.0000</span>/s</p>
+                <h3 id="crypto-price" style="margin-top:10px; color:var(--gold); font-size:1.6rem;">Price: $100.00 / coin</h3>
+            </div>
+            <button class="click-btn" style="background:linear-gradient(135deg, var(--accent), #0a8f8a); font-size:1rem;" onclick="mineClick()">⛏️ MINE</button>
+            <div class="market-btn-group">
+                <button id="buy-rig-btn" onclick="buyRig()" style="background-color:#27ae60;">Buy Rig - $50</button>
+                <button onclick="sellAllCoins()" style="background-color:#c0392b;">Sell All Coins</button>
+            </div>
+        </div>
+
+        <!-- 3. Snake -->
         <div id="game-snake" class="game-box">
             <h2>Retro Snake</h2>
             <p id="snake-score" style="font-weight:bold; margin:5px 0;">Score: 0</p>
+            <p style="color:var(--text-muted); font-size:0.85rem;">Arrow keys to steer</p>
             <canvas id="snakeCanvas" width="300" height="300"></canvas>
         </div>
 
-        <div id="game-memory" class="game-box">
-            <h2>Emoji Match</h2>
-            <p id="memory-msg" style="margin-bottom:10px;">Find matching sets.</p>
-            <div class="memory-grid" id="memoryGrid"></div>
-        </div>
-
-        <div id="game-skydrop" class="game-box">
-            <h2>Sky Drop</h2>
-            <p id="drop-score" style="font-weight:bold; margin-bottom:5px;">Score: 0 | Hearts: 3</p>
-            <canvas id="dropCanvas" width="350" height="400"></canvas>
-        </div>
-
-        <div id="game-trader" class="game-box">
-            <h2>Crypto Trader Sim</h2>
-            <div class="market-ui">
-                <p>Cash: $<span id="trader-cash">100.00</span></p>
-                <p>Inventory: <span id="trader-shares">0</span> Coins</p>
-                <h3 id="coin-price" style="margin-top:10px; color:var(--accent); font-size:1.6rem;">Price: $10.00</h3>
-            </div>
-            <div class="market-btn-group">
-                <button onclick="tradeAsset('buy')" style="background-color:#2ecc71;">Buy 1</button>
-                <button onclick="tradeAsset('sell')" style="background-color:#e74c3c;">Sell 1</button>
-            </div>
-            <div class="market-btn-group">
-                <button onclick="tradeAsset('buyall')" style="background-color:#27ae60;">Buy Max</button>
-                <button onclick="tradeAsset('sellall')" style="background-color:#c0392b;">Sell Max</button>
-            </div>
-        </div>
-
-        <div id="game-flappy" class="game-box">
-            <h2>Flappy Pixel</h2>
-            <p>Press <strong>Spacebar</strong> or Click/Tap Canvas to jump.</p>
-            <p id="flappy-score" style="font-weight:bold; margin-top:5px;">Score: 0</p>
-            <canvas id="flappyCanvas" width="360" height="400"></canvas>
-        </div>
-
-        <div id="game-breaker" class="game-box">
-            <h2>Brick Breaker</h2>
-            <p>Move mouse / touch across canvas to control paddle.</p>
-            <p id="breaker-score" style="font-weight:bold;">Score: 0</p>
-            <canvas id="breakerCanvas" width="400" height="350"></canvas>
-        </div>
-
-        <div id="game-miner" class="game-box">
-            <h2>Idle Miner RPG</h2>
-            <div class="miner-display">
-                <p><strong>Current Layer:</strong> <span id="mine-depth">Coal Deposits</span></p>
-                <p><strong>Wallet Balance:</strong> $<span id="mine-cash">0</span></p>
-                <p><strong>Mining Yield:</strong> +$<span id="mine-yield">1</span> / swing</p>
-                <p><strong>Automated Crew Output:</strong> $<span id="mine-idle">0</span> / sec</p>
-            </div>
-            <button id="mine-btn" onclick="mineManual()" style="width:100%; height:60px; font-size:1.2rem; background:#f39c12;">SWING PICKAXE</button>
-            <div class="upgrade-grid">
-                <button id="up-pick" onclick="upgradePickaxe()">Better Tool ($20)</button>
-                <button id="up-crew" onclick="hireMiner()">Hire Worker ($50)</button>
-            </div>
-        </div>
-
-        <div id="game-simon" class="game-box">
-            <h2>Simon Memory</h2>
-            <p id="simon-status">Press Start Match to display sequence</p>
-            <div class="simon-grid">
-                <div class="simon-pad" id="pad-0" onclick="simonPadClick(0)"></div>
-                <div class="simon-pad" id="pad-1" onclick="simonPadClick(1)"></div>
-                <div class="simon-pad" id="pad-2" onclick="simonPadClick(2)"></div>
-                <div class="simon-pad" id="pad-3" onclick="simonPadClick(3)"></div>
-            </div>
-            <button id="simon-start" onclick="startSimonRound()" style="width:100%;">Start Match</button>
-        </div>
-
-        <div id="game-stacker" class="game-box">
-            <h2>Tower Stacker</h2>
-            <p>Press <strong>Spacebar</strong> or Click/Tap Canvas to place block.</p>
-            <p id="stacker-score" style="font-weight:bold; margin-top:5px;">Slabs Stacked: 0</p>
-            <canvas id="stackerCanvas" width="360" height="400"></canvas>
-        </div>
-
-        <!-- NEW 10 game boxes -->
+        <!-- 4. Tic Tac Toe -->
         <div id="game-tictactoe" class="game-box">
             <h2>Tic Tac Toe</h2>
             <p id="ttt-status">Player X's turn</p>
@@ -544,78 +260,13 @@
             <button onclick="resetTTT()" style="margin-top:15px;">New Game</button>
         </div>
 
+        <!-- 5. 2048 -->
         <div id="game-2048" class="game-box">
             <h2>2048</h2>
             <p>Score: <span id="score2048">0</span></p>
-            <div id="grid2048" style="display:inline-block; background:#333; padding:8px; border-radius:12px;"></div>
+            <p style="color:var(--text-muted); font-size:0.85rem;">Arrow keys to slide</p>
+            <div id="grid2048" style="display:inline-block; background:#333; padding:8px; border-radius:12px; margin-top:10px;"></div>
             <button onclick="reset2048()" style="margin-top:15px;">Restart</button>
-        </div>
-
-        <div id="game-whackamole" class="game-box">
-            <h2>Whack-a-Mole</h2>
-            <p>Score: <span id="whack-score">0</span> | Time: <span id="whack-timer">30</span>s</p>
-            <div id="mole-field" style="display:flex; flex-wrap:wrap; justify-content:center; max-width:300px; margin:10px auto;"></div>
-            <button onclick="startWhack()">Start Game</button>
-        </div>
-
-        <div id="game-dinorunner" class="game-box">
-            <h2>Dino Runner</h2>
-            <p>Score: <span id="dino-score">0</span></p>
-            <canvas id="dinoCanvas" width="500" height="200"></canvas>
-        </div>
-
-        <div id="game-hangman" class="game-box">
-            <h2>Hangman</h2>
-            <p id="hangman-word"></p>
-            <p id="hangman-lives">Lives: 6</p>
-            <canvas id="hangmanCanvas" width="150" height="150" style="background:#fff; border-radius:8px;"></canvas>
-            <div id="hangman-letters" style="margin-top:10px;"></div>
-            <button onclick="resetHangman()" style="margin-top:10px;">New Word</button>
-        </div>
-
-        <div id="game-reaction" class="game-box">
-            <h2>Reaction Time</h2>
-            <p id="reaction-message">Click the button when the screen turns green.</p>
-            <button id="reaction-btn" style="width:200px; height:200px; font-size:1.5rem; background:#444;" onclick="reactionClick()">Wait...</button>
-            <p>Last time: <span id="reaction-time">--</span> ms</p>
-        </div>
-
-        <div id="game-quickmath" class="game-box">
-            <h2>Quick Math</h2>
-            <p id="math-problem">5 + 3 = ?</p>
-            <input type="number" id="math-answer" placeholder="Answer" style="padding:8px; width:120px; text-align:center;">
-            <button onclick="checkMath()" style="margin-top:8px;">Submit</button>
-            <p>Score: <span id="math-score">0</span> | Timer: <span id="math-timer">10</span>s</p>
-            <button onclick="startQuickMath()">New Game</button>
-        </div>
-
-        <div id="game-guessnumber" class="game-box">
-            <h2>Guess the Number</h2>
-            <p>I'm thinking of a number between 1 and 100.</p>
-            <input type="number" id="guess-input" min="1" max="100" placeholder="Your guess" style="padding:8px;">
-            <button onclick="makeGuess()">Guess</button>
-            <p id="guess-hint"></p>
-            <p>Attempts: <span id="guess-attempts">0</span></p>
-            <button onclick="resetGuess()">New Number</button>
-        </div>
-
-        <div id="game-rps" class="game-box">
-            <h2>Rock Paper Scissors</h2>
-            <p>You: <span id="rps-player">0</span> | Computer: <span id="rps-comp">0</span></p>
-            <div>
-                <button onclick="playRPS('rock')" style="font-size:1.8rem;">✊</button>
-                <button onclick="playRPS('paper')" style="font-size:1.8rem;">✋</button>
-                <button onclick="playRPS('scissors')" style="font-size:1.8rem;">✌️</button>
-            </div>
-            <p id="rps-result"></p>
-            <button onclick="resetRPS()">Reset Score</button>
-        </div>
-
-        <div id="game-minesweeper" class="game-box">
-            <h2>Mini Minesweeper</h2>
-            <p id="mine-status">Reveal cells, avoid mines. Right‑click to flag.</p>
-            <div id="ms-grid" style="display:inline-block; line-height:0;"></div>
-            <button onclick="resetMinesweeper()" style="margin-top:12px;">New Board</button>
         </div>
     </div>
 
@@ -660,99 +311,130 @@
 
             function runInitSequence(gameId) {
                 switch (gameId) {
-                    case 'clicker': initClicker(); break;
+                    case 'cookie': initCookie(); break;
+                    case 'crypto': initCrypto(); break;
                     case 'snake': initSnake(); break;
-                    case 'memory': initMemory(); break;
-                    case 'skydrop': initSkyDrop(); break;
-                    case 'trader': initTrader(); break;
-                    case 'flappy': initFlappy(); break;
-                    case 'breaker': initBreaker(); break;
-                    case 'miner': initMiner(); break;
-                    case 'simon': initSimon(); break;
-                    case 'stacker': initStacker(); break;
                     case 'tictactoe': initTicTacToe(); break;
                     case '2048': init2048(); break;
-                    case 'whackamole': initWhackAMole(); break;
-                    case 'dinorunner': initDinoRunner(); break;
-                    case 'hangman': initHangman(); break;
-                    case 'reaction': initReaction(); break;
-                    case 'quickmath': initQuickMath(); break;
-                    case 'guessnumber': initGuessNumber(); break;
-                    case 'rps': initRPS(); break;
-                    case 'minesweeper': initMinesweeper(); break;
                 }
             }
 
-            // Global keydown listener (only for games that need it)
             document.addEventListener("keydown", (e) => {
                 if (!currentActiveGame) return;
                 if (currentActiveGame === 'snake' && [37,38,39,40].includes(e.keyCode)) {
                     changeSnakeDirection(e);
                     e.preventDefault();
                 }
-                if (currentActiveGame === 'flappy' && e.keyCode === 32) {
-                    triggerFlappyJump();
-                    e.preventDefault();
-                }
-                if (currentActiveGame === 'stacker' && e.keyCode === 32) {
-                    dropStackBlock();
-                    e.preventDefault();
-                }
-                if (currentActiveGame === '2048') {
-                    if (e.keyCode >= 37 && e.keyCode <= 40) {
-                        move2048(e.keyCode);
-                        e.preventDefault();
-                    }
-                }
-                if (currentActiveGame === 'dinorunner' && (e.keyCode === 32 || e.keyCode === 38)) {
-                    dinoJump();
+                if (currentActiveGame === '2048' && e.keyCode >= 37 && e.keyCode <= 40) {
+                    move2048(e.keyCode);
                     e.preventDefault();
                 }
             });
 
-            /* ========== ORIGINAL 10 GAMES (unchanged, but kept for completeness) ========== */
-            // 1. Clicker
-            let pixels, baseClickValue, clickCost, autoValue, autoCost;
-            function initClicker() {
-                pixels = 0; baseClickValue = 1; clickCost = 10; autoValue = 0; autoCost = 15;
-                updateClickerUI();
-                let loop = setInterval(() => { pixels += autoValue; updateClickerUI(); }, 1000);
+            /* ========================================================
+               1. Cookie Clicker
+               ======================================================== */
+            let cookies, cps, clickPower, cursorCost, grandmaCost, clickPowerCost, factoryCost;
+            function initCookie() {
+                cookies = 0; cps = 0; clickPower = 1;
+                cursorCost = 15; grandmaCost = 100; clickPowerCost = 50; factoryCost = 500;
+                updateCookieUI();
+                let loop = setInterval(() => { cookies += cps; updateCookieUI(); }, 1000);
                 runningIntervals.push(loop);
             }
-            window.registerClick = function() {
-                let isCrit = Math.random() > 0.88;
-                pixels += isCrit ? (baseClickValue * 3) : baseClickValue;
-                updateClickerUI();
+            window.clickCookie = function() {
+                cookies += clickPower;
+                updateCookieUI();
+            };
+            window.buyCursor = function() {
+                if (cookies >= cursorCost) { cookies -= cursorCost; cps += 1; cursorCost = Math.floor(cursorCost * 1.5); updateCookieUI(); }
+            };
+            window.buyGrandma = function() {
+                if (cookies >= grandmaCost) { cookies -= grandmaCost; cps += 5; grandmaCost = Math.floor(grandmaCost * 1.6); updateCookieUI(); }
             };
             window.buyClickPower = function() {
-                if (pixels >= clickCost) { pixels -= clickCost; baseClickValue += 1; clickCost = Math.floor(clickCost * 1.5); updateClickerUI(); }
+                if (cookies >= clickPowerCost) { cookies -= clickPowerCost; clickPower += 1; clickPowerCost = Math.floor(clickPowerCost * 1.7); updateCookieUI(); }
             };
-            window.buyAutoClicker = function() {
-                if (pixels >= autoCost) { pixels -= autoCost; autoValue += 1; autoCost = Math.floor(autoCost * 1.6); updateClickerUI(); }
+            window.buyFactory = function() {
+                if (cookies >= factoryCost) { cookies -= factoryCost; cps += 25; factoryCost = Math.floor(factoryCost * 1.8); updateCookieUI(); }
             };
-            function updateClickerUI() {
-                document.getElementById('click-count').innerText = `Pixels: ${pixels}`;
-                document.getElementById('click-stats').innerText = `CPS: ${autoValue} | Manual Base: +${baseClickValue}`;
-                document.getElementById('up-click').innerText = `Upgrade Click (Cost: ${clickCost})`;
-                document.getElementById('up-auto').innerText = `Hire Automation (Cost: ${autoCost})`;
+            function updateCookieUI() {
+                document.getElementById('cookie-count').innerText = `Cookies: ${Math.floor(cookies)}`;
+                document.getElementById('cookie-stats').innerText = `Per second: ${cps} | Per click: ${clickPower}`;
+                document.getElementById('buy-cursor-btn').innerText = `Cursor (+1 CPS) - ${cursorCost}`;
+                document.getElementById('buy-cursor-btn').disabled = cookies < cursorCost;
+                document.getElementById('buy-grandma-btn').innerText = `Grandma (+5 CPS) - ${grandmaCost}`;
+                document.getElementById('buy-grandma-btn').disabled = cookies < grandmaCost;
+                document.getElementById('buy-clickpower-btn').innerText = `+1 Per Click - ${clickPowerCost}`;
+                document.getElementById('buy-clickpower-btn').disabled = cookies < clickPowerCost;
+                document.getElementById('buy-factory-btn').innerText = `Factory (+25 CPS) - ${factoryCost}`;
+                document.getElementById('buy-factory-btn').disabled = cookies < factoryCost;
             }
 
-            // 2. Snake (unchanged)
+            /* ========================================================
+               2. Crypto Mining Sim
+               ======================================================== */
+            let cryptoCash, cryptoCoins, cryptoRigs, cryptoPrice, rigCost;
+            function initCrypto() {
+                cryptoCash = 0; cryptoCoins = 0; cryptoRigs = 0; cryptoPrice = 100; rigCost = 50;
+                updateCryptoUI();
+                let mineLoop = setInterval(() => {
+                    if (cryptoRigs > 0) cryptoCoins += cryptoRigs * 0.01;
+                    updateCryptoUI();
+                }, 1000);
+                let priceLoop = setInterval(() => {
+                    const change = (Math.random() - 0.48) * 12; // slight upward bias, still volatile
+                    cryptoPrice = Math.max(10, cryptoPrice + change);
+                    updateCryptoUI();
+                }, 1500);
+                runningIntervals.push(mineLoop, priceLoop);
+            }
+            window.mineClick = function() {
+                cryptoCoins += 0.02;
+                updateCryptoUI();
+            };
+            window.buyRig = function() {
+                if (cryptoCash >= rigCost) { cryptoCash -= rigCost; cryptoRigs++; rigCost = Math.floor(rigCost * 1.5); updateCryptoUI(); }
+            };
+            window.sellAllCoins = function() {
+                if (cryptoCoins <= 0) return;
+                cryptoCash += cryptoCoins * cryptoPrice;
+                cryptoCoins = 0;
+                updateCryptoUI();
+            };
+            function updateCryptoUI() {
+                document.getElementById('crypto-cash').innerText = cryptoCash.toFixed(2);
+                document.getElementById('crypto-coins').innerText = cryptoCoins.toFixed(4);
+                document.getElementById('crypto-rigs').innerText = cryptoRigs;
+                document.getElementById('crypto-rate').innerText = (cryptoRigs * 0.01).toFixed(4);
+                document.getElementById('crypto-price').innerText = `Price: $${cryptoPrice.toFixed(2)} / coin`;
+                document.getElementById('buy-rig-btn').innerText = `Buy Rig - $${rigCost}`;
+                document.getElementById('buy-rig-btn').disabled = cryptoCash < rigCost;
+            }
+
+            /* ========================================================
+               3. Retro Snake
+               (clears its own interval before restarting, so dying
+               repeatedly doesn't stack multiple timers and speed the
+               game up each time)
+               ======================================================== */
             const snakeCanvas = document.getElementById("snakeCanvas");
             const snakeCtx = snakeCanvas.getContext("2d");
-            let snake, snakeFood, sDx, sDy, snakeScore, sGrid = 15;
+            let snake, snakeFood, sDx, sDy, snakeScore, sGrid = 15, snakeLoopId = null;
             function initSnake() {
+                if (snakeLoopId) { clearInterval(snakeLoopId); snakeLoopId = null; }
                 snake = [{x:150,y:150},{x:135,y:150},{x:120,y:150}];
                 sDx = sGrid; sDy = 0; snakeScore = 0;
                 document.getElementById('snake-score').innerText = "Score: 0";
                 spawnSnakeFood();
-                let loop = setInterval(processSnakeEngine, 140);
-                runningIntervals.push(loop);
+                snakeLoopId = setInterval(processSnakeEngine, 140);
+                runningIntervals.push(snakeLoopId);
             }
             function spawnSnakeFood() {
                 snakeFood = { x: Math.floor(Math.random()*(snakeCanvas.width/sGrid))*sGrid, y: Math.floor(Math.random()*(snakeCanvas.height/sGrid))*sGrid };
             }
             function processSnakeEngine() {
+                if (currentActiveGame !== 'snake') return;
                 if (evalSnakeCollision()) { alert("Game Over! Score: "+snakeScore); initSnake(); return; }
                 const head = {x: snake[0].x + sDx, y: snake[0].y + sDy};
                 snake.unshift(head);
@@ -761,7 +443,7 @@
                 } else { snake.pop(); }
                 snakeCtx.fillStyle="#0b0b0d"; snakeCtx.fillRect(0,0,snakeCanvas.width,snakeCanvas.height);
                 snakeCtx.fillStyle="#e74c3c"; snakeCtx.fillRect(snakeFood.x,snakeFood.y,sGrid,sGrid);
-                snakeCtx.fillStyle="var(--primary)"; snake.forEach(pt=>snakeCtx.fillRect(pt.x,pt.y,sGrid,sGrid));
+                snakeCtx.fillStyle="#6c5ce7"; snake.forEach(pt=>snakeCtx.fillRect(pt.x,pt.y,sGrid,sGrid));
             }
             function changeSnakeDirection(e) {
                 if(e.keyCode===37&&sDx===0){sDx=-sGrid;sDy=0;} if(e.keyCode===38&&sDy===0){sDx=0;sDy=-sGrid;}
@@ -772,65 +454,9 @@
                 return snake[0].x<0||snake[0].x>=snakeCanvas.width||snake[0].y<0||snake[0].y>=snakeCanvas.height;
             }
 
-            // 3-10 unchanged (Memory, SkyDrop, Trader, Flappy, Breaker, Miner, Simon, Stacker)
-            // ... (keep the same code as provided, just copy them inside this IIFE) ...
-            // For brevity, I'll include them but abbreviated here. In final output they remain identical.
-            // (Full code included in final answer below)
-
-            // 3. Memory
-            let memoryIcons = ['🎮','🎮','🎲','🎲','👾','👾','🐱','🐱','🦊','🦊','🍏','🍏','🚀','🚀','💎','💎'];
-            let pickedCards=[], pickedIds=[], completedPairs=0;
-            function initMemory(){ /* same */ }
-            // ... I will replicate them in the final answer exactly.
-            // For space in this reasoning, I'll reference them, but the full response includes everything.
-
-            // 4. SkyDrop
-            const dropCanvas = document.getElementById("dropCanvas");
-            const dropCtx = dropCanvas.getContext("2d");
-            let dropPaddleX, dropItem, dropScore, dropLives, dropSpeed;
-            function initSkyDrop(){ /* same */ }
-            // ...
-
-            // 5. Crypto Trader Sim
-            let mCash, mShares, mPrice;
-            function initTrader(){ /* same */ }
-            // ...
-
-            // 6. Flappy Pixel
-            const flapCanvas = document.getElementById("flappyCanvas");
-            const flapCtx = flapCanvas.getContext("2d");
-            let birdY, birdVelocity, pipes, flapScore, flapOver;
-            function initFlappy(){ /* same */ }
-            // ...
-
-            // 7. Brick Breaker
-            const breakCanvas = document.getElementById("breakerCanvas");
-            const breakCtx = breakCanvas.getContext("2d");
-            let bPaddleX, ball, bricks, breakerScore;
-            function initBreaker(){ /* same */ }
-            // ...
-
-            // 8. Idle Miner RPG
-            let mineGold, minePwr, mineWorkers, pwrCost, crewCost, currentLayerIndex;
-            const layers = [ {name:"Coal Deposits",max:500,mult:1},{name:"Iron Vein",max:2500,mult:4},{name:"Gold Stratum",max:15000,mult:20},{name:"Diamond Core",max:Infinity,mult:100} ];
-            function initMiner(){ /* same */ }
-            // ...
-
-            // 9. Simon Memory
-            let simonSeq=[], userSeq=[], simonTurn=false;
-            function initSimon(){ /* same */ }
-            // ...
-
-            // 10. Tower Stacker
-            const stackCanvas = document.getElementById("stackerCanvas");
-            const stackCtx = stackCanvas.getContext("2d");
-            let stackRows, currentBlock, blockSpeed, stackScore, stackOver;
-            function initStacker(){ /* same */ }
-            // ...
-
-            // ========== NEW 10 GAMES ==========
-
-            // 11. Tic Tac Toe
+            /* ========================================================
+               4. Tic Tac Toe
+               ======================================================== */
             let tttBoard, tttTurn, tttGameOver;
             function initTicTacToe() {
                 tttBoard = Array(9).fill(null);
@@ -878,7 +504,9 @@
             }
             window.resetTTT = initTicTacToe;
 
-            // 12. 2048
+            /* ========================================================
+               5. 2048
+               ======================================================== */
             let grid2048, score2048;
             function init2048() {
                 grid2048 = Array(4).fill().map(()=>Array(4).fill(0));
@@ -895,6 +523,7 @@
                 }
             }
             function move2048(dir) {
+                if (currentActiveGame !== '2048') return;
                 let moved = false;
                 function slide(row) {
                     let arr = row.filter(v=>v);
@@ -904,16 +533,16 @@
                     return arr;
                 }
                 let newGrid = Array(4).fill().map(()=>Array(4).fill(0));
-                if (dir===37) { // left
+                if (dir===37) {
                     for (let r=0;r<4;r++) { let row = slide(grid2048[r]); if(row.join(',')!==grid2048[r].join(',')) moved=true; newGrid[r]=row; }
-                } else if (dir===39) { // right
+                } else if (dir===39) {
                     for (let r=0;r<4;r++) { let row = slide([...grid2048[r]].reverse()).reverse(); if(row.join(',')!==grid2048[r].join(',')) moved=true; newGrid[r]=row; }
-                } else if (dir===38) { // up
+                } else if (dir===38) {
                     for (let c=0;c<4;c++) { let col = slide([grid2048[0][c],grid2048[1][c],grid2048[2][c],grid2048[3][c]]); for(let r=0;r<4;r++) { if(newGrid[r][c]!==col[r]) moved=true; newGrid[r][c]=col[r]; } }
-                } else if (dir===40) { // down
+                } else if (dir===40) {
                     for (let c=0;c<4;c++) { let col = slide([grid2048[3][c],grid2048[2][c],grid2048[1][c],grid2048[0][c]].reverse()).reverse(); for(let r=0;r<4;r++) { if(newGrid[r][c]!==col[r]) moved=true; newGrid[r][c]=col[r]; } }
                 }
-                if (moved) { grid2048 = newGrid; addRandom2048(); update2048UI(); if (check2048GameOver()) alert('Game Over!'); }
+                if (moved) { grid2048 = newGrid; addRandom2048(); update2048UI(); if (check2048GameOver()) setTimeout(()=>alert('Game Over! Score: '+score2048), 100); }
             }
             function check2048GameOver() {
                 for (let r=0;r<4;r++) for(let c=0;c<4;c++) {
@@ -935,6 +564,7 @@
                         cell.style.background = grid2048[r][c] ? '#eee' : '#555';
                         cell.style.color = '#000'; cell.style.display='flex'; cell.style.alignItems='center';
                         cell.style.justifyContent='center'; cell.style.fontWeight='bold'; cell.style.fontSize='1.5rem';
+                        cell.style.borderRadius = '6px';
                         cell.innerText = grid2048[r][c] || '';
                         row.appendChild(cell);
                     }
@@ -942,342 +572,6 @@
                 }
             }
             window.reset2048 = init2048;
-
-            // 13. Whack-a-Mole
-            let whackScore, whackTime, whackInterval, moleTimeout;
-            function initWhackAMole() {
-                whackScore = 0; whackTime = 30;
-                document.getElementById('whack-score').innerText = '0';
-                document.getElementById('whack-timer').innerText = '30';
-                const field = document.getElementById('mole-field');
-                field.innerHTML = '';
-                for (let i=0;i<9;i++) {
-                    let hole = document.createElement('div');
-                    hole.className = 'mole-hole'; hole.dataset.index = i;
-                    hole.addEventListener('click', whackMole);
-                    field.appendChild(hole);
-                }
-            }
-            function startWhack() {
-                if (whackInterval) clearInterval(whackInterval);
-                whackScore = 0; whackTime = 30;
-                document.getElementById('whack-score').innerText = '0';
-                document.getElementById('whack-timer').innerText = '30';
-                whackInterval = setInterval(() => {
-                    whackTime--;
-                    document.getElementById('whack-timer').innerText = whackTime;
-                    if (whackTime <= 0) {
-                        clearInterval(whackInterval);
-                        clearTimeout(moleTimeout);
-                        alert('Time up! Score: '+whackScore);
-                    }
-                }, 1000);
-                runningIntervals.push(whackInterval);
-                spawnMole();
-            }
-            function spawnMole() {
-                const holes = document.querySelectorAll('#mole-field .mole-hole');
-                holes.forEach(h => h.innerText = '');
-                let idx = Math.floor(Math.random()*9);
-                holes[idx].innerText = '🐹';
-                moleTimeout = setTimeout(spawnMole, 600 + Math.random()*800);
-            }
-            function whackMole(e) {
-                if (this.innerText === '🐹') {
-                    whackScore++;
-                    document.getElementById('whack-score').innerText = whackScore;
-                    this.innerText = '';
-                }
-            }
-
-            // 14. Dino Runner
-            const dinoCanvas = document.getElementById('dinoCanvas');
-            const dinoCtx = dinoCanvas.getContext('2d');
-            let dinoY, dinoVY, obstacles, dinoScore, dinoGameOver, dinoFrame;
-            function initDinoRunner() {
-                if (animationFrameId) cancelAnimationFrame(animationFrameId);
-                dinoY = 150; dinoVY = 0; obstacles = []; dinoScore = 0; dinoGameOver = false;
-                document.getElementById('dino-score').innerText = '0';
-                dinoCanvas.onclick = () => dinoJump();
-                dinoFrame = requestAnimationFrame(runDino);
-                animationFrameId = dinoFrame;
-            }
-            function dinoJump() {
-                if (dinoY >= 150 && !dinoGameOver) dinoVY = -8;
-            }
-            function runDino() {
-                if (currentActiveGame !== 'dinorunner') return;
-                dinoCtx.clearRect(0,0,dinoCanvas.width,dinoCanvas.height);
-                dinoVY += 0.5; dinoY += dinoVY;
-                if (dinoY > 150) { dinoY = 150; dinoVY = 0; }
-                if (Math.random()<0.02) obstacles.push({x:500, w:15, h:30});
-                for (let i=obstacles.length-1;i>=0;i--) {
-                    obstacles[i].x -= 5;
-                    if (obstacles[i].x < -20) obstacles.splice(i,1);
-                }
-                dinoCtx.fillStyle = '#2ecc71'; dinoCtx.fillRect(50, dinoY, 20, 30);
-                dinoCtx.fillStyle = '#e67e22';
-                obstacles.forEach(o => dinoCtx.fillRect(o.x, 170-o.h, o.w, o.h));
-                // collision
-                for (let o of obstacles) {
-                    if (50 < o.x+o.w && 70 > o.x && dinoY < 170 && dinoY+30 > 170-o.h) {
-                        dinoGameOver = true;
-                    }
-                }
-                if (!dinoGameOver) {
-                    dinoScore++;
-                    document.getElementById('dino-score').innerText = dinoScore;
-                    dinoFrame = requestAnimationFrame(runDino);
-                    animationFrameId = dinoFrame;
-                } else {
-                    alert('Game Over! Score: '+dinoScore);
-                    initDinoRunner();
-                }
-            }
-
-            // 15. Hangman
-            let hangmanWord, guessed, wrongGuesses, maxWrong = 6;
-            const wordList = ["JAVASCRIPT","PYTHON","COMPUTER","KEYBOARD","MONITOR","ELEPHANT","GIRAFFE","BANANA","ORANGE","PLANET"];
-            function initHangman() {
-                hangmanWord = wordList[Math.floor(Math.random()*wordList.length)];
-                guessed = new Set(); wrongGuesses = 0;
-                updateHangmanUI();
-            }
-            function updateHangmanUI() {
-                let display = hangmanWord.split('').map(ch => guessed.has(ch) ? ch : '_').join(' ');
-                document.getElementById('hangman-word').innerText = display;
-                document.getElementById('hangman-lives').innerText = 'Lives: '+(maxWrong-wrongGuesses);
-                drawHangman();
-                const lettersDiv = document.getElementById('hangman-letters');
-                lettersDiv.innerHTML = '';
-                for (let i=65; i<=90; i++) {
-                    let letter = String.fromCharCode(i);
-                    let btn = document.createElement('button');
-                    btn.className = 'letter-btn'; btn.innerText = letter;
-                    btn.disabled = guessed.has(letter) || wrongGuesses>=maxWrong || !hangmanWord.includes(letter) && guessed.has(letter);
-                    btn.addEventListener('click', ()=>guessHangman(letter));
-                    lettersDiv.appendChild(btn);
-                }
-            }
-            function guessHangman(letter) {
-                if (guessed.has(letter) || wrongGuesses>=maxWrong) return;
-                guessed.add(letter);
-                if (!hangmanWord.includes(letter)) wrongGuesses++;
-                updateHangmanUI();
-                if (hangmanWord.split('').every(ch=>guessed.has(ch))) alert('You win! The word was '+hangmanWord);
-                else if (wrongGuesses>=maxWrong) alert('Hanged! Word was '+hangmanWord);
-            }
-            function drawHangman() {
-                let canvas = document.getElementById('hangmanCanvas');
-                let ctx = canvas.getContext('2d');
-                ctx.clearRect(0,0,150,150);
-                ctx.strokeStyle = '#000'; ctx.lineWidth = 3;
-                if (wrongGuesses>=1) { ctx.beginPath(); ctx.moveTo(20,130); ctx.lineTo(80,130); ctx.stroke(); } // base
-                if (wrongGuesses>=2) { ctx.beginPath(); ctx.moveTo(35,130); ctx.lineTo(35,20); ctx.stroke(); } // pole
-                if (wrongGuesses>=3) { ctx.beginPath(); ctx.moveTo(35,20); ctx.lineTo(80,20); ctx.stroke(); } // beam
-                if (wrongGuesses>=4) { ctx.beginPath(); ctx.moveTo(80,20); ctx.lineTo(80,40); ctx.stroke(); } // rope
-                if (wrongGuesses>=5) { ctx.beginPath(); ctx.arc(80,55,15,0,Math.PI*2); ctx.stroke(); } // head
-                if (wrongGuesses>=6) { ctx.beginPath(); ctx.moveTo(80,70); ctx.lineTo(80,100); ctx.stroke(); } // body
-            }
-            window.resetHangman = initHangman;
-
-            // 16. Reaction Time
-            let reactionStart, waiting;
-            function initReaction() {
-                document.getElementById('reaction-message').innerText = 'Click the button when the screen turns green.';
-                document.getElementById('reaction-btn').style.background = '#444';
-                document.getElementById('reaction-time').innerText = '--';
-                waiting = false;
-            }
-            window.reactionClick = function() {
-                if (!waiting) {
-                    document.getElementById('reaction-btn').style.background = '#e74c3c';
-                    document.getElementById('reaction-message').innerText = 'Wait for green...';
-                    waiting = true;
-                    let delay = 1500 + Math.random()*3000;
-                    setTimeout(() => {
-                        if (waiting) {
-                            document.getElementById('reaction-btn').style.background = '#2ecc71';
-                            document.getElementById('reaction-message').innerText = 'CLICK NOW!';
-                            reactionStart = Date.now();
-                        }
-                    }, delay);
-                } else {
-                    if (document.getElementById('reaction-btn').style.background === 'rgb(46, 204, 113)') {
-                        let time = Date.now() - reactionStart;
-                        document.getElementById('reaction-time').innerText = time;
-                        document.getElementById('reaction-message').innerText = 'Your reaction: '+time+' ms. Click to try again.';
-                        document.getElementById('reaction-btn').style.background = '#444';
-                        waiting = false;
-                    }
-                }
-            };
-
-            // 17. Quick Math
-            let mathScore, mathTimer, mathAnswer, mathInterval;
-            function initQuickMath() {
-                mathScore = 0; mathTimer = 10;
-                document.getElementById('math-score').innerText = '0';
-                document.getElementById('math-timer').innerText = '10';
-                document.getElementById('math-answer').value = '';
-                newMathProblem();
-            }
-            function startQuickMath() {
-                if (mathInterval) clearInterval(mathInterval);
-                mathScore = 0; mathTimer = 10;
-                document.getElementById('math-score').innerText = '0';
-                document.getElementById('math-timer').innerText = '10';
-                newMathProblem();
-                mathInterval = setInterval(() => {
-                    mathTimer--;
-                    document.getElementById('math-timer').innerText = mathTimer;
-                    if (mathTimer <= 0) {
-                        clearInterval(mathInterval);
-                        alert('Time up! Final score: '+mathScore);
-                    }
-                }, 1000);
-                runningIntervals.push(mathInterval);
-            }
-            function newMathProblem() {
-                let a = Math.floor(Math.random()*20)+1, b = Math.floor(Math.random()*20)+1;
-                let op = ['+','-','*'][Math.floor(Math.random()*3)];
-                mathAnswer = op==='+'? a+b : op==='-'? a-b : a*b;
-                document.getElementById('math-problem').innerText = `${a} ${op} ${b} = ?`;
-            }
-            window.checkMath = function() {
-                let user = parseInt(document.getElementById('math-answer').value);
-                if (user === mathAnswer) {
-                    mathScore++;
-                    document.getElementById('math-score').innerText = mathScore;
-                    document.getElementById('math-answer').value = '';
-                    newMathProblem();
-                }
-            };
-
-            // 18. Guess the Number
-            let secretNumber, guessAttempts;
-            function initGuessNumber() {
-                secretNumber = Math.floor(Math.random()*100)+1;
-                guessAttempts = 0;
-                document.getElementById('guess-hint').innerText = '';
-                document.getElementById('guess-attempts').innerText = '0';
-                document.getElementById('guess-input').value = '';
-            }
-            window.makeGuess = function() {
-                let guess = parseInt(document.getElementById('guess-input').value);
-                if (isNaN(guess)) return;
-                guessAttempts++;
-                document.getElementById('guess-attempts').innerText = guessAttempts;
-                if (guess === secretNumber) {
-                    document.getElementById('guess-hint').innerText = `Correct! It was ${secretNumber}. You got it in ${guessAttempts} tries.`;
-                } else {
-                    document.getElementById('guess-hint').innerText = guess < secretNumber ? 'Too low!' : 'Too high!';
-                }
-            };
-            window.resetGuess = initGuessNumber;
-
-            // 19. Rock Paper Scissors
-            let rpsPlayerScore=0, rpsCompScore=0;
-            function initRPS() {
-                rpsPlayerScore=0; rpsCompScore=0;
-                updateRPSScore();
-                document.getElementById('rps-result').innerText = '';
-            }
-            function updateRPSScore() {
-                document.getElementById('rps-player').innerText = rpsPlayerScore;
-                document.getElementById('rps-comp').innerText = rpsCompScore;
-            }
-            window.playRPS = function(player) {
-                let choices = ['rock','paper','scissors'];
-                let comp = choices[Math.floor(Math.random()*3)];
-                let result = '';
-                if (player===comp) result = "It's a tie!";
-                else if ((player==='rock'&&comp==='scissors')||(player==='paper'&&comp==='rock')||(player==='scissors'&&comp==='paper')) {
-                    rpsPlayerScore++; result = `You win! ${player} beats ${comp}.`;
-                } else {
-                    rpsCompScore++; result = `Computer wins! ${comp} beats ${player}.`;
-                }
-                document.getElementById('rps-result').innerText = result;
-                updateRPSScore();
-                if (rpsPlayerScore===5) alert('You win the match!');
-                if (rpsCompScore===5) alert('Computer wins the match!');
-            };
-            window.resetRPS = initRPS;
-
-            // 20. Mini Minesweeper
-            let msGrid, msRevealed, msFlagged, msMines, msGameOver;
-            function initMinesweeper() {
-                msGrid = Array(8).fill().map(()=>Array(8).fill(0));
-                msRevealed = Array(8).fill().map(()=>Array(8).fill(false));
-                msFlagged = Array(8).fill().map(()=>Array(8).fill(false));
-                msMines = new Set();
-                msGameOver = false;
-                while(msMines.size<10) {
-                    let r = Math.floor(Math.random()*8), c = Math.floor(Math.random()*8);
-                    msMines.add(r+','+c);
-                }
-                for (let pos of msMines) {
-                    let [r,c] = pos.split(',').map(Number);
-                    msGrid[r][c] = -1;
-                    for (let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++) {
-                        let nr=r+dr, nc=c+dc;
-                        if (nr>=0&&nr<8&&nc>=0&&nc<8&&msGrid[nr][nc]!==-1) msGrid[nr][nc]++;
-                    }
-                }
-                document.getElementById('mine-status').innerText = 'Reveal cells, avoid mines. Right‑click to flag.';
-                renderMS();
-            }
-            function renderMS() {
-                const container = document.getElementById('ms-grid');
-                container.innerHTML = '';
-                for (let r=0;r<8;r++) {
-                    let row = document.createElement('div');
-                    for (let c=0;c<8;c++) {
-                        let cell = document.createElement('div');
-                        cell.className = 'minesweeper-cell';
-                        cell.dataset.row = r; cell.dataset.col = c;
-                        if (msRevealed[r][c]) {
-                            cell.classList.add('revealed');
-                            cell.innerText = msGrid[r][c]===-1 ? '💣' : msGrid[r][c]||'';
-                        } else if (msFlagged[r][c]) {
-                            cell.innerText = '🚩';
-                        }
-                        cell.addEventListener('click', (e)=>revealMS(r,c));
-                        cell.addEventListener('contextmenu', (e)=>{ e.preventDefault(); toggleFlag(r,c); });
-                        row.appendChild(cell);
-                    }
-                    container.appendChild(row);
-                }
-            }
-            function revealMS(r,c) {
-                if (msGameOver || msRevealed[r][c] || msFlagged[r][c]) return;
-                msRevealed[r][c] = true;
-                if (msGrid[r][c] === -1) {
-                    msGameOver = true;
-                    document.getElementById('mine-status').innerText = 'BOOM! Game Over.';
-                    for (let pos of msMines) { let [mr,mc]=pos.split(',').map(Number); msRevealed[mr][mc]=true; }
-                } else if (msGrid[r][c] === 0) {
-                    for (let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++) {
-                        let nr=r+dr, nc=c+dc;
-                        if (nr>=0&&nr<8&&nc>=0&&nc<8) revealMS(nr,nc);
-                    }
-                }
-                renderMS();
-                if (checkMSWin()) {
-                    document.getElementById('mine-status').innerText = 'You cleared the minefield!';
-                    msGameOver = true;
-                }
-            }
-            function toggleFlag(r,c) {
-                if (msGameOver || msRevealed[r][c]) return;
-                msFlagged[r][c] = !msFlagged[r][c];
-                renderMS();
-            }
-            function checkMSWin() {
-                for (let r=0;r<8;r++) for(let c=0;c<8;c++) if(!msRevealed[r][c] && msGrid[r][c]!==-1) return false;
-                return true;
-            }
-            window.resetMinesweeper = initMinesweeper;
         })();
     </script>
 </body>
